@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>I Am Human Foundation — Dignity, Justice &amp; Human Rights</title>
+<meta name="description" content="I Am Human Foundation promotes human rights, dignity, justice, and access to essential needs across Africa, Europe, and beyond.">
+<meta name="theme-color" content="#FBF7F0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#06101E" media="(prefers-color-scheme: dark)">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="I Am Human Foundation">
+<meta property="og:description" content="The beauty of humanity is not in being human, but in being humane.">
+<meta property="og:image" content="assets/og-image.jpg"><!-- CMS: social share image -->
+
+<link rel="icon" href="assets/logo-emblem.png" type="image/png" sizes="any">
+<link rel="apple-touch-icon" href="assets/logo-emblem.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+
+<!-- Set theme before paint to avoid a flash of the wrong palette -->
+<script>
+(function () {
+  try {
+    var stored = localStorage.getItem('iah-theme');
+    var system = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', stored || system);
+  } catch (e) {}
+})();
+</script>
+</head>
+
+<body data-page="home">
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<!-- ============ ICON + ART SPRITE ============ -->
+<svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-caret" viewBox="0 0 24 24"><path d="m6 9.5 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8.5 8.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 14.5V19a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 19V8a1.5 1.5 0 0 1 1.5-1.5H10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.6-7-9.4A4.1 4.1 0 0 1 12 8a4.1 4.1 0 0 1 7 2.6C19 15.4 12 20 12 20Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 9.8h17M8.5 3v4M15.5 3v4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-dinner" viewBox="0 0 24 24"><path d="M4 4v6a2.5 2.5 0 0 0 5 0V4M6.5 12.5V21M19 4c-1.6 1-2.4 2.7-2.4 5s.6 3 1.6 3.4V21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V6l10-2v12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="16.5" cy="16" r="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="i-hands" viewBox="0 0 24 24"><path d="M12 21s-6-3.2-6-8V7.5L12 5l6 2.5V13c0 4.8-6 8-6 8Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.5 12.3 11.4 14l3.3-3.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-scales" viewBox="0 0 24 24"><path d="M12 4v16M6 20h12M4 9h6M14 9h6M7 9l-3 5.2a3.2 3.2 0 0 0 6 0Zm10 0-3 5.2a3.2 3.2 0 0 0 6 0Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="4.6" r="1.6" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+    <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3.5c3.4 4 6 6.9 6 10a6 6 0 0 1-12 0c0-3.1 2.6-6 6-10Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 14a3 3 0 0 0 3 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 20a6 6 0 0 1 12 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M16 5.4a3.2 3.2 0 0 1 0 5.2M17.5 14.6A5.6 5.6 0 0 1 21 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m15.2 8.8-1.8 4.6-4.6 1.8 1.8-4.6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+    <symbol id="i-bank" viewBox="0 0 24 24"><path d="M3.5 9.5 12 4.5l8.5 5M5 9.5v8M9.5 9.5v8M14.5 9.5v8M19 9.5v8M3 20.5h18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M3 8.5A2 2 0 0 1 5 6.5h14a2 2 0 0 1 2 2V10a2 2 0 0 0 0 4v1.5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V14a2 2 0 0 0 0-4Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 7v10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="2 2.6"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.4 12h17.2M12 3.4c2.4 2.4 3.6 5.3 3.6 8.6S14.4 18.2 12 20.6c-2.4-2.4-3.6-5.3-3.6-8.6S9.6 5.8 12 3.4Z" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15 6.2A2.2 2.2 0 0 0 12.8 4H6.2A2.2 2.2 0 0 0 4 6.2v6.6A2.2 2.2 0 0 0 6.2 15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.8 4.4 4.2L19 7.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.2A8.4 8.4 0 0 1 9.8 4a8.4 8.4 0 1 0 10.2 10.2Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+    <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="17.1" cy="6.9" r="1.1" fill="currentColor"/></symbol>
+    <symbol id="i-linkedin" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="4" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 10.5V17M8 7.4v.1M12 17v-3.6a2.1 2.1 0 0 1 4.2 0V17" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-facebook" viewBox="0 0 24 24"><path d="M14.8 8.4h2.4M14.8 21V8.6a3 3 0 0 1 3-3h.6M11.4 12.6h5.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M4.5 4.5 19.5 19.5M19.5 4.5 4.5 19.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m4 7.5 8 5.5 8-5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-quote" viewBox="0 0 24 24"><path d="M10 6c-3.3 1.4-5 3.9-5 7.5V19h6v-6H7.6c.2-2.2 1.1-3.7 2.9-4.6Zm10 0c-3.3 1.4-5 3.9-5 7.5V19h6v-6h-3.4c.2-2.2 1.1-3.7 2.9-4.6Z" fill="currentColor"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.6" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 7.2V12l3.2 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-health" viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 6V4.5A1.5 1.5 0 0 1 10.5 3h3A1.5 1.5 0 0 1 15 4.5V6M12 10.4v5.4M9.3 13.1h5.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H10a2.5 2.5 0 0 1 2 1 2.5 2.5 0 0 1 2-1h4.5A1.5 1.5 0 0 1 20 5.5v12a1.5 1.5 0 0 1-1.5 1.5H14a2.5 2.5 0 0 0-2 1 2.5 2.5 0 0 0-2-1H5.5A1.5 1.5 0 0 1 4 17.5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 5v15" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3.5 13.9 9l5.6 1.9-5.6 1.9L12 18.4 10.1 12.8 4.5 10.9 10.1 9Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M18.5 16.5 19.3 19l2.2.8-2.2.8-.8 2.4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-megaphone" viewBox="0 0 24 24"><path d="M4 10.5v3a1.5 1.5 0 0 0 1.5 1.5H8l6 4V5l-6 4H5.5A1.5 1.5 0 0 0 4 10.5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M17.5 9.2a4 4 0 0 1 0 5.6M8 15v4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+
+    <symbol id="art-figures" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+      <g fill="currentColor">
+        <circle cx="96" cy="150" r="26" opacity=".55"/><path d="M50 300c0-27 21-48 46-48s46 21 46 48Z" opacity=".55"/>
+        <circle cx="200" cy="128" r="34" opacity=".8"/><path d="M141 300c0-34 27-61 59-61s59 27 59 61Z" opacity=".8"/>
+        <circle cx="306" cy="156" r="24" opacity=".45"/><path d="M262 300c0-25 20-45 44-45s44 20 44 45Z" opacity=".45"/>
+      </g>
+    </symbol>
+    <symbol id="art-water" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+      <g fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" opacity=".6">
+        <path d="M-20 210c40-26 80-26 120 0s80 26 120 0 80-26 120 0"/>
+        <path d="M-20 250c40-26 80-26 120 0s80 26 120 0 80-26 120 0" opacity=".6"/>
+      </g>
+      <path d="M200 60c30 40 48 62 48 84a48 48 0 1 1-96 0c0-22 18-44 48-84Z" fill="currentColor" opacity=".75"/>
+    </symbol>
+    <symbol id="art-learn" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+      <g fill="currentColor" opacity=".7"><path d="M200 70 340 128 200 186 60 128Z"/></g>
+      <g fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" opacity=".55">
+        <path d="M100 148v56c0 22 45 40 100 40s100-18 100-40v-56"/><path d="M330 140v70"/>
+      </g>
+    </symbol>
+    <symbol id="art-justice" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+      <g fill="none" stroke="currentColor" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" opacity=".7">
+        <path d="M200 54v206M120 260h160M104 108h192"/>
+        <path d="m104 108-38 74a44 44 0 0 0 76 0Zm192 0-38 74a44 44 0 0 0 76 0Z"/>
+      </g>
+    </symbol>
+    <symbol id="art-portrait" viewBox="0 0 400 520" preserveAspectRatio="xMidYMid slice">
+      <g fill="currentColor"><circle cx="200" cy="196" r="86" opacity=".8"/><path d="M56 520c0-79 64-143 144-143s144 64 144 143Z" opacity=".8"/></g>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="scroll-progress" aria-hidden="true"><span class="scroll-progress__bar" id="scrollBar"></span></div>
+
+<!-- ============ HEADER ============ -->
+<!-- ============ HEADER (identical on every page) ============ -->
+<header class="site-header" id="siteHeader">
+  <div class="shell site-header__inner">
+    <a class="brand" href="index.html" aria-label="I Am Human Foundation — home">
+      <img class="brand__mark" src="assets/logo-emblem.png" alt="" width="128" height="128" decoding="async">
+      <span class="brand__text">
+        <span class="brand__name">I Am Human</span>
+        <span class="brand__sub">Foundation</span>
+      </span>
+    </a>
+
+    <nav class="nav" id="primaryNav" aria-label="Primary">
+      <ul class="nav__list">
+        <li class="nav__item">
+          <a class="nav__link" href="index.html" data-nav="home">Home</a>
+        </li>
+
+        <li class="nav__item nav__item--has-menu">
+          <a class="nav__link" href="about.html" data-nav="about">
+            About
+            <svg class="nav__caret" aria-hidden="true"><use href="#i-caret"/></svg>
+          </a>
+          <div class="submenu">
+            <ul class="submenu__list">
+              <li><a href="about.html" data-nav-page="about">
+                <span class="submenu__ico"><svg aria-hidden="true"><use href="#i-people"/></svg></span>
+                <span class="submenu__txt"><strong>Who We Are</strong><span>Our purpose, values and beliefs</span></span>
+              </a></li>
+              <li><a href="mission.html" data-nav-page="mission">
+                <span class="submenu__ico"><svg aria-hidden="true"><use href="#i-compass"/></svg></span>
+                <span class="submenu__txt"><strong>Our Mission</strong><span>The four pillars of our work</span></span>
+              </a></li>
+              <li><a href="founder.html" data-nav-page="founder">
+                <span class="submenu__ico"><svg aria-hidden="true"><use href="#i-quote"/></svg></span>
+                <span class="submenu__txt"><strong>Founder Story</strong><span>Shalimar Abbiusi, a voice for justice</span></span>
+              </a></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="nav__item nav__item--has-menu">
+          <a class="nav__link" href="impact.html" data-nav="work">
+            Our Work
+            <svg class="nav__caret" aria-hidden="true"><use href="#i-caret"/></svg>
+          </a>
+          <div class="submenu">
+            <ul class="submenu__list">
+              <li><a href="impact.html" data-nav-page="impact">
+                <span class="submenu__ico"><svg aria-hidden="true"><use href="#i-globe"/></svg></span>
+                <span class="submenu__txt"><strong>Impact &amp; Regions</strong><span>Africa, Europe and global advocacy</span></span>
+              </a></li>
+              <li><a href="projects.html" data-nav-page="projects">
+                <span class="submenu__ico"><svg aria-hidden="true"><use href="#i-sparkle"/></svg></span>
+                <span class="submenu__txt"><strong>Projects</strong><span>What we are building next</span></span>
+              </a></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="nav__item nav__item--has-menu">
+          <a class="nav__link" href="donate.html" data-nav="involved">
+            Get Involved
+            <svg class="nav__caret" aria-hidden="true"><use href="#i-caret"/></svg>
+          </a>
+          <div class="submenu">
+            <ul class="submenu__list">
+              <li><a href="donate.html" data-nav-page="donate">
+                <span class="submenu__ico"><svg aria-hidden="true"><use href="#i-heart"/></svg></span>
+                <span class="submenu__txt"><strong>Donate</strong><span>Bank transfer, GoFundMe or tickets</span></span>
+              </a></li>
+              <li><a href="launch-dinner.html" data-nav-page="launch">
+                <span class="submenu__ico"><svg aria-hidden="true"><use href="#i-dinner"/></svg></span>
+                <span class="submenu__txt"><strong>Launch Dinner</strong><span>Our official launch event</span></span>
+              </a></li>
+              <li><a href="contact.html" data-nav-page="contact">
+                <span class="submenu__ico"><svg aria-hidden="true"><use href="#i-mail"/></svg></span>
+                <span class="submenu__txt"><strong>Contact</strong><span>Partner, volunteer or say hello</span></span>
+              </a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme" aria-pressed="false" title="Toggle theme">
+        <span class="theme-toggle__track" aria-hidden="true">
+          <span class="theme-toggle__thumb">
+            <svg class="theme-toggle__icon theme-toggle__icon--sun"><use href="#i-sun"/></svg>
+            <svg class="theme-toggle__icon theme-toggle__icon--moon"><use href="#i-moon"/></svg>
+          </span>
+        </span>
+      </button>
+
+      <a class="btn btn--gold btn--sm site-header__cta" href="donate.html">
+        <svg class="btn__icon" aria-hidden="true"><use href="#i-heart"/></svg>
+        Donate
+      </a>
+
+      <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+        <svg class="menu-btn__icon menu-btn__icon--open" aria-hidden="true"><use href="#i-menu"/></svg>
+        <svg class="menu-btn__icon menu-btn__icon--close" aria-hidden="true"><use href="#i-close"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ MOBILE MENU (identical on every page) ============ -->
+<div class="mobile-menu" id="mobileMenu" hidden>
+  <nav class="mobile-menu__inner" aria-label="Mobile">
+    <ul class="mobile-menu__list">
+      <li><a href="index.html" data-nav-page="home"><span class="m-num">01</span>Home</a></li>
+      <li>
+        <a href="about.html" data-nav-page="about"><span class="m-num">02</span>About</a>
+        <div class="mobile-menu__sub">
+          <a href="about.html">Who We Are</a>
+          <a href="mission.html">Our Mission</a>
+          <a href="founder.html">Founder Story</a>
+        </div>
+      </li>
+      <li>
+        <a href="impact.html" data-nav-page="impact"><span class="m-num">03</span>Our Work</a>
+        <div class="mobile-menu__sub">
+          <a href="impact.html">Impact &amp; Regions</a>
+          <a href="projects.html">Projects</a>
+        </div>
+      </li>
+      <li>
+        <a href="donate.html" data-nav-page="donate"><span class="m-num">04</span>Get Involved</a>
+        <div class="mobile-menu__sub">
+          <a href="donate.html">Donate</a>
+          <a href="launch-dinner.html">Launch Dinner</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </li>
+    </ul>
+    <div class="mobile-menu__foot">
+      <a class="btn btn--gold btn--block" href="donate.html">Support Our Mission</a>
+      <p class="mobile-menu__quote">“The beauty of humanity is not in being human, but in being humane.”</p>
+    </div>
+  </nav>
+</div>
+
+<main id="main">
+  <!-- ============ 1. HERO ============ -->
+  <section class="hero" id="top">
+    <div class="hero__media" aria-hidden="true">
+      <!--
+        MEDIA PLACEHOLDER — hero background.
+        Replace the .hero__art block with a photograph or looping video, e.g.
+        <img src="assets/hero-community.jpg" alt="" class="hero__img">
+        <video class="hero__video" autoplay muted loop playsinline poster="assets/hero-poster.jpg">
+          <source src="assets/hero.webm" type="video/webm">
+        </video>
+        Intended imagery: diverse people together — community, dignity, hope.
+      -->
+      <div class="hero__art">
+        <img class="hero__img" src="assets/photos/p54.jpg" alt="" width="1200" height="799" fetchpriority="high" decoding="async">
+      </div>
+      <div class="hero__aurora"></div>
+      <div class="hero__grain"></div>
+      <div class="hero__scrim"></div>
+    </div>
+
+    <div class="shell hero__inner">
+      <p class="eyebrow eyebrow--light reveal" data-reveal>
+        <span class="eyebrow__dot" aria-hidden="true"></span>
+        Human rights · Dignity · Justice
+      </p>
+
+      <h1 class="hero__title reveal" data-reveal data-reveal-delay="1">
+        The Beauty of Humanity Is Not in Being Human,
+        <em>but in Being Humane.</em>
+      </h1>
+
+      <p class="hero__lede reveal" data-reveal data-reveal-delay="2">
+        I Am Human Foundation promotes human rights, dignity, justice, and access to
+        essential needs across Africa, Europe, and beyond.
+      </p>
+
+      <div class="hero__actions reveal" data-reveal data-reveal-delay="3">
+        <a class="btn btn--gold btn--lg" href="donate.html">
+          Support Our Mission
+          <svg class="btn__icon btn__icon--end" aria-hidden="true"><use href="#i-arrow"/></svg>
+        </a>
+        <a class="btn btn--ghost-light btn--lg" href="mission.html">Explore Our Work</a>
+      </div>
+
+      <ul class="hero__facts reveal" data-reveal data-reveal-delay="4">
+        <li><svg aria-hidden="true"><use href="#i-scales"/></svg> Advocacy &amp; Justice</li>
+        <li><svg aria-hidden="true"><use href="#i-drop"/></svg> Essential Needs</li>
+        <li><svg aria-hidden="true"><use href="#i-globe"/></svg> Africa · Europe · Global</li>
+      </ul>
+    </div>
+
+    <a class="hero__scroll" href="#launch" aria-label="Scroll to the launch dinner announcement">
+      <span class="hero__scroll-line" aria-hidden="true"></span>
+      <span>Scroll</span>
+    </a>
+  </section>
+
+  <!-- ============ 2. LAUNCH DINNER ============ -->
+  <section class="section section--tight launch" id="launch" aria-labelledby="launch-title">
+    <div class="shell">
+      <article class="event-card reveal" data-reveal>
+        <div class="event-card__glow" aria-hidden="true"></div>
+
+        <div class="event-card__media">
+          <figure class="photo photo--fill">
+            <img src="assets/launch-dinner.jpg" alt="Guests seated around a long table sharing dinner and conversation" width="736" height="978" loading="lazy" decoding="async">
+          </figure>
+          <div class="event-card__date-chip" aria-hidden="true">
+            <span class="event-card__day">30</span>
+            <span class="event-card__mon">Nov</span>
+            <span class="event-card__yr">2024</span>
+          </div>
+        </div>
+
+        <div class="event-card__body">
+          <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span> Official Launch Event</p>
+          <h2 class="event-card__title" id="launch-title">I Am Human Foundation Launch Dinner</h2>
+          <p class="event-card__date">
+            <svg aria-hidden="true"><use href="#i-calendar"/></svg>
+            <time datetime="2024-11-30">30 November 2024</time>
+          </p>
+          <p class="event-card__text">
+            Join founder Shalimar Abbiusi for an inspiring evening of positivity, dinner and
+            drinks, performances, powerful storytelling, and a closer look at the vision and
+            projects of I Am Human Foundation.
+          </p>
+
+          <ul class="event-card__details">
+            <li><span class="event-card__ico"><svg aria-hidden="true"><use href="#i-calendar"/></svg></span><span><strong>The Evening</strong>30 November 2024</span></li>
+            <li><span class="event-card__ico"><svg aria-hidden="true"><use href="#i-dinner"/></svg></span><span><strong>Dinner &amp; Drinks</strong>Seated dinner service</span></li>
+            <li><span class="event-card__ico"><svg aria-hidden="true"><use href="#i-music"/></svg></span><span><strong>Performances</strong>Live music &amp; storytelling</span></li>
+            <li><span class="event-card__ico"><svg aria-hidden="true"><use href="#i-hands"/></svg></span><span><strong>Fundraising</strong>Supporting our first projects</span></li>
+          </ul>
+
+          <div class="event-card__actions">
+            <a class="btn btn--gold" href="https://iamhumanfdn.org/ticket-i-am-human-launch-dinner" target="_blank" rel="noopener noreferrer">
+              <svg class="btn__icon" aria-hidden="true"><use href="#i-ticket"/></svg>
+              Buy Ticket
+            </a>
+            <a class="btn btn--outline" href="donate.html">
+              <svg class="btn__icon" aria-hidden="true"><use href="#i-heart"/></svg>
+              Make a Donation
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ 3. WELCOME / ABOUT ============ -->
+  <section class="section welcome" id="welcome" aria-labelledby="welcome-title">
+    <div class="shell welcome__grid">
+      <div class="welcome__copy">
+        <p class="eyebrow reveal" data-reveal><span class="eyebrow__dot" aria-hidden="true"></span> Who we are</p>
+        <h2 class="h2 reveal" data-reveal data-reveal-delay="1" id="welcome-title">Welcome to <em>I Am Human</em> Foundation</h2>
+        <p class="subhead reveal" data-reveal data-reveal-delay="2">Promoting Human Rights, Dignity, and Justice for All</p>
+
+        <p class="prose reveal" data-reveal data-reveal-delay="3">
+          At I Am Human, we believe that every person deserves to live with dignity, justice,
+          and freedom—regardless of race, gender, nationality, or background. Our goal is simple
+          yet powerful: to promote and protect human rights in Africa and around the world.
+        </p>
+        <p class="prose reveal" data-reveal data-reveal-delay="4">
+          Human rights go beyond basic freedoms. Every person deserves clean drinking water,
+          education, healthcare, and the minimum necessities to survive and live a dignified
+          life. This is where I Am Human comes into play.
+        </p>
+
+        <blockquote class="pullquote reveal" data-reveal data-reveal-delay="5">
+          <svg class="pullquote__mark" aria-hidden="true"><use href="#i-quote"/></svg>
+          <p>Human rights and basic needs should not be ideals—they should be a reality for all.</p>
+        </blockquote>
+      </div>
+
+      <div class="welcome__media">
+        <figure class="photo photo--tall reveal" data-reveal data-reveal-delay="2">
+          <img src="assets/community-school.jpg" alt="Founder Shalimar Abbiusi walking with a group of schoolchildren in uniform, arm raised in greeting" width="1080" height="613" loading="lazy" decoding="async">
+        </figure>
+        <!-- MEDIA PLACEHOLDER — classroom / learning, portrayed with dignity -->
+        <figure class="photo photo--small reveal" data-reveal data-reveal-delay="4">
+          <img src="assets/photos/p33.jpg" alt="Children standing in a row holding bags of donated supplies" width="1080" height="786" loading="lazy" decoding="async">
+        </figure>
+        <div class="welcome__badge reveal" data-reveal data-reveal-delay="5">
+          <svg aria-hidden="true"><use href="#i-globe"/></svg>
+          <span><strong>Africa · Europe · Beyond</strong>Projects in development</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4. MISSION ============ -->
+  <section class="section mission" id="mission" aria-labelledby="mission-title">
+    <div class="mission__bg" aria-hidden="true"></div>
+    <div class="shell">
+      <header class="section-head section-head--center">
+        <p class="eyebrow eyebrow--light reveal" data-reveal><span class="eyebrow__dot" aria-hidden="true"></span> What we do</p>
+        <h2 class="h2 reveal" data-reveal data-reveal-delay="1" id="mission-title">Our Mission</h2>
+        <p class="section-head__lede reveal" data-reveal data-reveal-delay="2">
+          Four pillars guide every project we build — shaped by the people they serve.
+        </p>
+      </header>
+
+      <ul class="pillars">
+        <li class="pillar reveal" data-reveal data-reveal-delay="1">
+          <span class="pillar__num" aria-hidden="true">01</span>
+          <span class="pillar__icon"><svg aria-hidden="true"><use href="#i-scales"/></svg></span>
+          <h3 class="pillar__title">Advocacy &amp; Justice</h3>
+          <p class="pillar__text">Standing up against arbitrary detention, abuse of power, discrimination, and injustice.</p>
+        </li>
+        <li class="pillar reveal" data-reveal data-reveal-delay="2">
+          <span class="pillar__num" aria-hidden="true">02</span>
+          <span class="pillar__icon"><svg aria-hidden="true"><use href="#i-drop"/></svg></span>
+          <h3 class="pillar__title">Essential Needs</h3>
+          <p class="pillar__text">Supporting access to clean water, healthcare, education, and dignified living conditions.</p>
+        </li>
+        <li class="pillar reveal" data-reveal data-reveal-delay="3">
+          <span class="pillar__num" aria-hidden="true">03</span>
+          <span class="pillar__icon"><svg aria-hidden="true"><use href="#i-people"/></svg></span>
+          <h3 class="pillar__title">Community Empowerment</h3>
+          <p class="pillar__text">Empowering individuals and communities through education, support, charity, and opportunity.</p>
+        </li>
+        <li class="pillar reveal" data-reveal data-reveal-delay="4">
+          <span class="pillar__num" aria-hidden="true">04</span>
+          <span class="pillar__icon"><svg aria-hidden="true"><use href="#i-compass"/></svg></span>
+          <h3 class="pillar__title">Tailored Local Impact</h3>
+          <p class="pillar__text">Creating projects shaped around the needs of specific countries, regions, communities, and people.</p>
+        </li>
+      </ul>
+
+      <p class="mission__coda reveal" data-reveal data-reveal-delay="5">Because everyone matters.</p>
+    </div>
+  </section>
+
+  <!-- ============ 5. FOUNDER ============ -->
+  <section class="section founder" id="founder" aria-labelledby="founder-title">
+    <div class="shell founder__grid">
+      <div class="founder__media">
+        <figure class="photo photo--portrait reveal" data-reveal>
+          <img src="assets/founder-shalimar.jpg" alt="Shalimar Abbiusi, Founder of I Am Human Foundation" width="781" height="976" loading="lazy" decoding="async">
+        </figure>
+        <div class="founder__plate reveal" data-reveal data-reveal-delay="3">
+          <span class="founder__plate-name">Shalimar Abbiusi</span>
+          <span class="founder__plate-role">Founder, I Am Human Foundation</span>
+        </div>
+      </div>
+
+      <div class="founder__copy">
+        <p class="eyebrow reveal" data-reveal><span class="eyebrow__dot" aria-hidden="true"></span> Founder story</p>
+        <h2 class="h2 reveal" data-reveal data-reveal-delay="1" id="founder-title">A Voice for Justice</h2>
+
+        <p class="prose prose--lg reveal" data-reveal data-reveal-delay="2">
+          Shalimar Abbiusi’s experience of mistreatment and unlawful detention after speaking up
+          for the people of Ghana is a powerful reminder that rights can be abused without
+          accountability. Her story is one of resilience, courage, and the belief that no person
+          should be silenced for demanding justice.
+        </p>
+
+        <figure class="bigquote reveal" data-reveal data-reveal-delay="3">
+          <blockquote><p>Every life has equal value.</p></blockquote>
+          <figcaption>Shalimar Abbiusi</figcaption>
+        </figure>
+
+        <div class="founder__actions reveal" data-reveal data-reveal-delay="4">
+          <!-- Enable when the full story page is published -->
+          <a class="btn btn--outline" href="founder.html">
+            Read Shalimar’s Story
+            <svg class="btn__icon btn__icon--end" aria-hidden="true"><use href="#i-arrow"/></svg>
+          </a>
+          <a class="btn btn--text" href="donate.html">
+            Support the mission
+            <svg class="btn__icon btn__icon--end" aria-hidden="true"><use href="#i-arrow"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 6. IMPACT / VISION ============ -->
+  <section class="section impact" id="impact" aria-labelledby="impact-title">
+    <div class="impact__bg" aria-hidden="true"></div>
+    <div class="shell">
+      <header class="section-head section-head--center">
+        <p class="eyebrow eyebrow--light reveal" data-reveal><span class="eyebrow__dot" aria-hidden="true"></span> Our vision</p>
+        <h2 class="h2 reveal" data-reveal data-reveal-delay="1" id="impact-title">A Future Where Humanity Comes First</h2>
+        <p class="section-head__lede reveal" data-reveal data-reveal-delay="2">
+          I Am Human Foundation works across Africa, Europe, and beyond — defending dignity,
+          supporting vulnerable communities, and making basic human needs accessible to people
+          who have been overlooked for too long.
+        </p>
+      </header>
+
+      <div class="impact__layout">
+        <div class="globe reveal" data-reveal data-reveal-delay="2" aria-hidden="true">
+          <svg class="globe__svg" viewBox="0 0 420 420" role="presentation">
+            <defs>
+              <radialGradient id="globeFill" cx="35%" cy="30%" r="80%">
+                <stop offset="0%" stop-color="var(--globe-hi)"/>
+                <stop offset="100%" stop-color="var(--globe-lo)"/>
+              </radialGradient>
+            </defs>
+            <circle class="globe__halo" cx="210" cy="210" r="196"/>
+            <circle class="globe__sphere" cx="210" cy="210" r="150" fill="url(#globeFill)"/>
+            <g class="globe__grid">
+              <circle cx="210" cy="210" r="150"/>
+              <ellipse cx="210" cy="210" rx="150" ry="52"/>
+              <ellipse cx="210" cy="210" rx="150" ry="104"/>
+              <ellipse cx="210" cy="210" rx="52" ry="150"/>
+              <ellipse cx="210" cy="210" rx="104" ry="150"/>
+              <line x1="60" y1="210" x2="360" y2="210"/>
+            </g>
+            <g class="globe__orbit"><ellipse cx="210" cy="210" rx="192" ry="72" transform="rotate(-18 210 210)"/></g>
+            <g class="globe__pins">
+              <g class="globe__pin" style="--d:0s"><circle cx="232" cy="252" r="7"/><circle class="globe__pulse" cx="232" cy="252" r="7"/></g>
+              <g class="globe__pin" style="--d:.9s"><circle cx="204" cy="140" r="7"/><circle class="globe__pulse" cx="204" cy="140" r="7"/></g>
+              <g class="globe__pin" style="--d:1.8s"><circle cx="132" cy="214" r="7"/><circle class="globe__pulse" cx="132" cy="214" r="7"/></g>
+            </g>
+          </svg>
+        </div>
+
+        <ul class="regions">
+          <li class="region reveal" data-reveal data-reveal-delay="1">
+            <div class="region__head">
+              <h3>Africa</h3>
+              <span class="tag tag--gold">Projects in development</span>
+            </div>
+            <p>Working alongside local communities on clean water, education, healthcare access, and dignified living conditions — designed around what each community says it needs.</p>
+          </li>
+          <li class="region reveal" data-reveal data-reveal-delay="2">
+            <div class="region__head">
+              <h3>Europe</h3>
+              <span class="tag tag--emerald">Projects in development</span>
+            </div>
+            <p>Building awareness, partnerships, and support networks that connect European communities to human-rights work — and stand with people facing discrimination and injustice.</p>
+          </li>
+          <li class="region reveal" data-reveal data-reveal-delay="3">
+            <div class="region__head">
+              <h3>Global Advocacy</h3>
+              <span class="tag tag--terracotta">Ongoing</span>
+            </div>
+            <p>Speaking up against arbitrary detention and abuse of power wherever it happens, and insisting that accountability is not optional.</p>
+          </li>
+        </ul>
+      </div>
+
+      <!-- CMS PLACEHOLDER — partner & supporter logos -->
+      <div class="partners reveal" data-reveal data-reveal-delay="3">
+        <p class="partners__label">Partners &amp; supporters</p>
+        <ul class="partners__list">
+          <li class="partners__slot"><span>Partner logo</span></li>
+          <li class="partners__slot"><span>Partner logo</span></li>
+          <li class="partners__slot"><span>Partner logo</span></li>
+          <li class="partners__slot"><span>Partner logo</span></li>
+          <li class="partners__slot"><span>Your organisation</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 7. DONATION ============ -->
+  <section class="section donate" id="donate" aria-labelledby="donate-title">
+    <div class="shell">
+      <header class="section-head section-head--center">
+        <p class="eyebrow reveal" data-reveal><span class="eyebrow__dot" aria-hidden="true"></span> Give</p>
+        <h2 class="h2 reveal" data-reveal data-reveal-delay="1" id="donate-title">Turn Compassion Into Action</h2>
+        <p class="section-head__lede reveal" data-reveal data-reveal-delay="2">
+          Your contribution helps bring dignity, justice, essential support, and hope to people
+          and communities who need it most.
+        </p>
+      </header>
+
+      <ul class="give-grid">
+        <li class="give reveal" data-reveal data-reveal-delay="1">
+          <span class="give__icon"><svg aria-hidden="true"><use href="#i-bank"/></svg></span>
+          <h3 class="give__title">Bank Transfer</h3>
+          <p class="give__text">Direct transfer to the foundation’s account. Ideal for larger or recurring gifts.</p>
+          <dl class="give__fields">
+            <div class="give__field">
+              <dt>Account Name</dt>
+              <dd><span>I Am Human</span></dd>
+            </div>
+            <div class="give__field">
+              <dt>IBAN</dt>
+              <dd>
+                <span class="give__iban" id="ibanValue">BE74 9735 0897 5707</span>
+                <button class="copy-btn" type="button" data-copy="BE74 9735 0897 5707" aria-label="Copy IBAN to clipboard">
+                  <svg class="copy-btn__icon copy-btn__icon--idle" aria-hidden="true"><use href="#i-copy"/></svg>
+                  <svg class="copy-btn__icon copy-btn__icon--done" aria-hidden="true"><use href="#i-check"/></svg>
+                  <span class="copy-btn__label">Copy</span>
+                </button>
+              </dd>
+            </div>
+          </dl>
+        </li>
+
+        <li class="give give--featured reveal" data-reveal data-reveal-delay="2">
+          <span class="give__flag">Most popular</span>
+          <span class="give__icon"><svg aria-hidden="true"><use href="#i-heart"/></svg></span>
+          <h3 class="give__title">GoFundMe</h3>
+          <p class="give__text">Give securely by card in a few seconds, and share the campaign with people who care.</p>
+          <a class="btn btn--gold btn--block" href="https://gofund.me/ff43f723" target="_blank" rel="noopener noreferrer">
+            Donate via GoFundMe
+            <svg class="btn__icon btn__icon--end" aria-hidden="true"><use href="#i-arrow"/></svg>
+          </a>
+          <p class="give__note">gofund.me/ff43f723</p>
+        </li>
+
+        <li class="give reveal" data-reveal data-reveal-delay="3">
+          <span class="give__icon"><svg aria-hidden="true"><use href="#i-ticket"/></svg></span>
+          <h3 class="give__title">Tickets</h3>
+          <p class="give__text">Join us at the Launch Dinner — your seat directly supports the foundation’s first projects.</p>
+          <a class="btn btn--outline btn--block" href="https://iamhumanfdn.org/ticket-i-am-human-launch-dinner" target="_blank" rel="noopener noreferrer">
+            Buy Launch Dinner Ticket
+            <svg class="btn__icon btn__icon--end" aria-hidden="true"><use href="#i-arrow"/></svg>
+          </a>
+          <p class="give__note">iamhumanfdn.org</p>
+        </li>
+      </ul>
+
+      <div class="cta-band__actions reveal" data-reveal data-reveal-delay="4" style="margin-top: 2.2rem">
+        <a class="btn btn--outline" href="donate.html">
+          See all ways to give
+          <svg class="btn__icon btn__icon--end" aria-hidden="true"><use href="#i-arrow"/></svg>
+        </a>
+      </div>
+
+      <p class="give-assure reveal" data-reveal data-reveal-delay="5">
+        <svg aria-hidden="true"><use href="#i-hands"/></svg>
+        Every contribution goes towards advocacy, essential needs, and community projects.
+        For questions about giving, <a href="contact.html">get in touch</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ 8. CLOSING CTA ============ -->
+  <section class="section">
+    <div class="shell">
+      <header class="section-head section-head--center">
+        <p class="eyebrow reveal" data-reveal><span class="eyebrow__dot" aria-hidden="true"></span> From the field</p>
+        <h2 class="h2 reveal" data-reveal data-reveal-delay="1">The work, as it <em>actually looks</em></h2>
+        <p class="section-head__lede reveal" data-reveal data-reveal-delay="2">Moments from our community outreach, distributions, and meetings across Ghana and Nigeria.</p>
+      </header>
+      <div class="gallery reveal" data-reveal data-reveal-delay="2">
+        <figure class="gallery__item">
+          <img src="assets/photos/p06.jpg" alt="Shalimar Abbiusi speaking into a microphone at a community meeting" width="1080" height="1080" loading="lazy" decoding="async">
+          <figcaption>Speaking at a community meeting</figcaption>
+        </figure>
+        <figure class="gallery__item">
+          <img src="assets/photos/p12.jpg" alt="Shalimar Abbiusi with a group of women, arms around one another, smiling" width="1200" height="1200" loading="lazy" decoding="async">
+          <figcaption>With women after a community session</figcaption>
+        </figure>
+        <figure class="gallery__item">
+          <img src="assets/photos/p23.jpg" alt="Shalimar Abbiusi kneeling to hand a meal to a man seated on the roadside" width="1080" height="720" loading="lazy" decoding="async">
+          <figcaption>A meal handed over on the roadside</figcaption>
+        </figure>
+        <figure class="gallery__item">
+          <img src="assets/photos/p46.jpg" alt="A presentation cheque for market women being held up at a public event" width="1200" height="802" loading="lazy" decoding="async">
+          <figcaption>Support presented to market women</figcaption>
+        </figure>
+        <figure class="gallery__item gallery__item--w2">
+          <img src="assets/photos/p62.jpg" alt="Loaves of bread being handed out during a street distribution" width="1200" height="799" loading="lazy" decoding="async">
+          <figcaption>Bread distribution on the street</figcaption>
+        </figure>
+        <figure class="gallery__item gallery__item--w2">
+          <img src="assets/photos/p70.jpg" alt="A man using a wheelchair holding a small child at a street distribution" width="1200" height="799" loading="lazy" decoding="async">
+          <figcaption>Reaching families at a distribution</figcaption>
+        </figure>
+        <figure class="gallery__item gallery__item--w2">
+          <img src="assets/photos/p74.jpg" alt="Shalimar Abbiusi walking through a narrow market lane with her team" width="1200" height="799" loading="lazy" decoding="async">
+          <figcaption>Walking the market lanes</figcaption>
+        </figure>
+        <figure class="gallery__item gallery__item--h2">
+          <img src="assets/photos/p41.jpg" alt="Shalimar Abbiusi speaking at a podium during an empowerment event" width="810" height="1080" loading="lazy" decoding="async">
+          <figcaption>Speaking at an empowerment event</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section closing" id="join" aria-labelledby="closing-title">
+    <div class="closing__bg" aria-hidden="true">
+      <div class="closing__aurora"></div>
+      <div class="closing__grain"></div>
+    </div>
+    <div class="shell closing__inner">
+      <h2 class="closing__title reveal" data-reveal id="closing-title">
+        Stand for Dignity. Stand for Justice. <em>Stand for Humanity.</em>
+      </h2>
+      <p class="closing__text reveal" data-reveal data-reveal-delay="1">
+        Together, we can build a world where no one is left behind.
+      </p>
+      <div class="closing__actions reveal" data-reveal data-reveal-delay="2">
+        <a class="btn btn--gold btn--lg" href="donate.html">
+          Donate Now
+          <svg class="btn__icon btn__icon--end" aria-hidden="true"><use href="#i-heart"/></svg>
+        </a>
+        <a class="btn btn--ghost-light btn--lg" href="contact.html">Join Our Movement</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ 9. FOOTER ============ -->
+<!-- ============ FOOTER (identical on every page) ============ -->
+<footer class="footer" id="contact-footer">
+  <div class="shell footer__grid">
+    <div class="footer__brand">
+      <a class="brand brand--footer" href="index.html" aria-label="I Am Human Foundation — home">
+        <img class="brand__mark" src="assets/logo-emblem.png" alt="" width="128" height="128" loading="lazy" decoding="async">
+        <span class="brand__text">
+          <span class="brand__name">I Am Human</span>
+          <span class="brand__sub">Foundation</span>
+        </span>
+      </a>
+      <p class="footer__mission">
+        Promoting human rights, dignity, justice, and access to essential needs across Africa,
+        Europe, and beyond — because everyone matters.
+      </p>
+      <ul class="socials" aria-label="Social media">
+        <li><a href="#" aria-label="I Am Human Foundation on Instagram"><svg aria-hidden="true"><use href="#i-instagram"/></svg></a></li>
+        <li><a href="#" aria-label="I Am Human Foundation on LinkedIn"><svg aria-hidden="true"><use href="#i-linkedin"/></svg></a></li>
+        <li><a href="#" aria-label="I Am Human Foundation on Facebook"><svg aria-hidden="true"><use href="#i-facebook"/></svg></a></li>
+        <li><a href="#" aria-label="I Am Human Foundation on X"><svg aria-hidden="true"><use href="#i-x"/></svg></a></li>
+        <li><a href="mailto:info@iamhumanfdn.org" aria-label="Email I Am Human Foundation"><svg aria-hidden="true"><use href="#i-mail"/></svg></a></li>
+      </ul>
+    </div>
+
+    <nav class="footer__nav" aria-label="Footer">
+      <div class="footer__col">
+        <h2 class="footer__heading">Explore</h2>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="mission.html">Mission</a></li>
+          <li><a href="founder.html">Founder Story</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h2 class="footer__heading">Take action</h2>
+        <ul>
+          <li><a href="impact.html">Impact &amp; Regions</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="donate.html">Donate</a></li>
+          <li><a href="launch-dinner.html">Launch Dinner</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer__col footer__col--wide">
+        <h2 class="footer__heading">Stay close to the work</h2>
+        <p class="footer__note">Project updates, stories, and event news. <!-- CMS: connect to newsletter provider --></p>
+        <form class="subscribe" action="#" method="post" novalidate>
+          <label class="sr-only" for="subEmail">Email address</label>
+          <input class="subscribe__input" id="subEmail" name="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+          <button class="subscribe__btn" type="submit">
+            <span>Join</span>
+            <svg aria-hidden="true"><use href="#i-arrow"/></svg>
+          </button>
+        </form>
+        <p class="subscribe__msg" id="subMsg" role="status" aria-live="polite"></p>
+      </div>
+    </nav>
+  </div>
+
+  <p class="footer__quote">“The beauty of humanity is not in being human but in being humane.”</p>
+
+  <div class="shell footer__bar">
+    <p>© <span id="year">2024</span> I Am Human Foundation. All rights reserved.</p>
+    <ul class="footer__legal">
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">Terms</a></li>
+      <li><a href="#">Accessibility</a></li>
+    </ul>
+  </div>
+</footer>
+
+<!-- ============ MOBILE FLOATING DONATE CTA ============ -->
+<div class="float-cta" id="floatCta">
+  <a class="float-cta__btn" href="donate.html">
+    <svg aria-hidden="true"><use href="#i-heart"/></svg>
+    <span>Donate</span>
+  </a>
+  <a class="float-cta__btn float-cta__btn--alt" href="https://iamhumanfdn.org/ticket-i-am-human-launch-dinner" target="_blank" rel="noopener noreferrer">
+    <svg aria-hidden="true"><use href="#i-ticket"/></svg>
+    <span>Tickets</span>
+  </a>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

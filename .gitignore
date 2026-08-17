@@ -1,0 +1,15 @@
+# Local tooling / editor state
+.claude/
+.vscode/
+.idea/
+
+# OS cruft
+Thumbs.db
+ehthumbs.db
+desktop.ini
+.DS_Store
+
+# Dependencies / build output (none today, but keeps the repo clean if added later)
+node_modules/
+.vercel/
+*.log
