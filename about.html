@@ -3,13 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>About — I Am Human Foundation</title>
+<title>About | I Am Human Foundation</title>
 <meta name="description" content="Who we are: a foundation promoting human rights, dignity, and justice for all across Africa, Europe, and beyond.">
-<meta name="theme-color" content="#FBF7F0" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#06101E" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FBF7F0">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="About — I Am Human Foundation">
+<meta property="og:title" content="About | I Am Human Foundation">
 <meta property="og:description" content="Who we are: a foundation promoting human rights, dignity, and justice for all across Africa, Europe, and beyond.">
 <meta property="og:image" content="assets/logo-emblem.png">
 
@@ -26,8 +25,8 @@
 (function () {
   try {
     var stored = localStorage.getItem('iah-theme');
-    var system = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', stored || system);
+    /* Bright by default: dark is opt-in through the toggle, never through the OS. */
+    document.documentElement.setAttribute('data-theme', stored === 'dark' ? 'dark' : 'light');
   } catch (e) {}
 })();
 </script>
@@ -109,7 +108,7 @@
 <!-- ============ HEADER (identical on every page) ============ -->
 <header class="site-header" id="siteHeader">
   <div class="shell site-header__inner">
-    <a class="brand" href="index.html" aria-label="I Am Human Foundation — home">
+    <a class="brand" href="index.html" aria-label="I Am Human Foundation home">
       <img class="brand__mark" src="assets/logo-emblem.png" alt="" width="128" height="128" decoding="async">
       <span class="brand__text">
         <span class="brand__name">I Am Human</span>
@@ -261,7 +260,7 @@
       </nav>
       <p class="eyebrow eyebrow--light reveal" data-reveal><span class="eyebrow__dot" aria-hidden="true"></span> Who we are</p>
       <h1 class="page-hero__title reveal" data-reveal data-reveal-delay="1">Welcome to <em>I Am Human</em> Foundation</h1>
-      <p class="page-hero__lede reveal" data-reveal data-reveal-delay="2">Promoting human rights, dignity, and justice for all — regardless of race, gender, nationality, or background.</p>
+      <p class="page-hero__lede reveal" data-reveal data-reveal-delay="2">Promoting human rights, dignity, and justice for all, regardless of race, gender, nationality, or background.</p>
       <div class="page-hero__actions reveal" data-reveal data-reveal-delay="3">
         <a class="btn btn--gold" href="donate.html">Support Our Mission <svg class="btn__icon btn__icon--end" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         <a class="btn btn--ghost-light" href="mission.html">Explore Our Mission</a>
@@ -277,7 +276,7 @@
         <div class="rich reveal" data-reveal data-reveal-delay="2">
           <p>
             At I Am Human, we believe that every person deserves to live with dignity, justice,
-            and freedom—regardless of race, gender, nationality, or background. Our goal is simple
+            and freedom, regardless of race, gender, nationality, or background. Our goal is simple
             yet powerful: to promote and protect human rights in Africa and around the world.
           </p>
           <p>
@@ -288,13 +287,13 @@
         </div>
         <blockquote class="pullquote reveal" data-reveal data-reveal-delay="3">
           <svg class="pullquote__mark" aria-hidden="true"><use href="#i-quote"/></svg>
-          <p>Human rights and basic needs should not be ideals—they should be a reality for all.</p>
+          <p>Human rights and basic needs should not be ideals; they should be a reality for all.</p>
         </blockquote>
       </div>
       <div class="split__media">
         <figure class="photo photo--framed reveal" data-reveal data-reveal-delay="2">
           <img src="assets/community-school.jpg" alt="Founder Shalimar Abbiusi walking with a group of schoolchildren in uniform, arm raised in greeting" width="1080" height="613" loading="lazy" decoding="async">
-          <figcaption><b>Alongside the community</b>Our work begins with the people it is meant to serve — never for them, always with them.</figcaption>
+          <figcaption><b>Alongside the community</b>Our work begins with the people it is meant to serve: never for them, always with them.</figcaption>
         </figure>
       </div>
     </div>
@@ -345,7 +344,7 @@
           <span class="step__num" aria-hidden="true"></span>
           <div>
             <h3>Listen first</h3>
-            <p>We start by asking a community what it actually needs — not by arriving with a plan already written.</p>
+            <p>We start by asking a community what it actually needs, not by arriving with a plan already written.</p>
           </div>
         </div>
         <div class="step reveal" data-reveal data-reveal-delay="2">
@@ -359,14 +358,14 @@
           <span class="step__num" aria-hidden="true"></span>
           <div>
             <h3>Deliver the essentials</h3>
-            <p>Clean water, healthcare, education, and dignified living conditions — the minimum necessities for a life of dignity.</p>
+            <p>Clean water, healthcare, education, and dignified living conditions, the minimum necessities for a life of dignity.</p>
           </div>
         </div>
         <div class="step reveal" data-reveal data-reveal-delay="4">
           <span class="step__num" aria-hidden="true"></span>
           <div>
             <h3>Stay accountable</h3>
-            <p>We report openly on what we raise, what we spend, and what changes — including when something does not go to plan.</p>
+            <p>We report openly on what we raise, what we spend, and what changes, including when something does not go to plan.</p>
           </div>
         </div>
       </div>
@@ -379,7 +378,7 @@
         <li class="card reveal" data-reveal data-reveal-delay="1">
           <span class="card__icon"><svg aria-hidden="true"><use href="#i-compass"/></svg></span>
           <h3 class="card__title">Our Mission</h3>
-          <p class="card__text">Advocacy and justice, essential needs, community empowerment, and tailored local impact — explained in full.</p>
+          <p class="card__text">Advocacy and justice, essential needs, community empowerment, and tailored local impact, explained in full.</p>
           <div class="card__foot"><a class="card__link" href="mission.html">Read our mission <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
         </li>
         <li class="card reveal" data-reveal data-reveal-delay="2">
@@ -391,7 +390,7 @@
         <li class="card reveal" data-reveal data-reveal-delay="3">
           <span class="card__icon"><svg aria-hidden="true"><use href="#i-globe"/></svg></span>
           <h3 class="card__title">Where We Work</h3>
-          <p class="card__text">Africa, Europe, and global advocacy — the regions we are building towards and what is planned in each.</p>
+          <p class="card__text">Africa, Europe, and global advocacy: the regions we are building towards and what is planned in each.</p>
           <div class="card__foot"><a class="card__link" href="impact.html">See our regions <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
         </li>
       </ul>
@@ -401,7 +400,7 @@
   <section class="band-photo">
     <img src="assets/photos/p16.jpg" alt="Shalimar Abbiusi in conversation with a woman at a community meeting" width="1080" height="720" loading="lazy" decoding="async">
     <div class="shell band-photo__caption reveal" data-reveal>
-      <p>We start by asking a community what it actually needs — not by arriving with a plan already written.</p>
+      <p>We start by asking a community what it actually needs, not by arriving with a plan already written.</p>
       <span>Listening first</span>
     </div>
   </section>
@@ -411,7 +410,7 @@
       <header class="section-head section-head--center">
         <p class="eyebrow reveal" data-reveal><span class="eyebrow__dot" aria-hidden="true"></span> In the community</p>
         <h2 class="h2 reveal" data-reveal data-reveal-delay="1">Solidarity, <em>not charity</em></h2>
-        <p class="section-head__lede reveal" data-reveal data-reveal-delay="2">Our work happens in classrooms, market lanes, meeting halls and front rooms — alongside the people it is meant to serve.</p>
+        <p class="section-head__lede reveal" data-reveal data-reveal-delay="2">Our work happens in classrooms, market lanes, meeting halls and front rooms, alongside the people it is meant to serve.</p>
       </header>
       <div class="gallery reveal" data-reveal data-reveal-delay="2">
         <figure class="gallery__item">
@@ -470,7 +469,7 @@
 <footer class="footer" id="contact-footer">
   <div class="shell footer__grid">
     <div class="footer__brand">
-      <a class="brand brand--footer" href="index.html" aria-label="I Am Human Foundation — home">
+      <a class="brand brand--footer" href="index.html" aria-label="I Am Human Foundation home">
         <img class="brand__mark" src="assets/logo-emblem.png" alt="" width="128" height="128" loading="lazy" decoding="async">
         <span class="brand__text">
           <span class="brand__name">I Am Human</span>
@@ -479,7 +478,7 @@
       </a>
       <p class="footer__mission">
         Promoting human rights, dignity, justice, and access to essential needs across Africa,
-        Europe, and beyond — because everyone matters.
+        Europe, and beyond, because everyone matters.
       </p>
       <ul class="socials" aria-label="Social media">
         <li><a href="#" aria-label="I Am Human Foundation on Instagram"><svg aria-hidden="true"><use href="#i-instagram"/></svg></a></li>

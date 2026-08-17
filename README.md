@@ -1,21 +1,22 @@
-# I Am Human Foundation — website
+# I Am Human Foundation website
 
 A nine-page static site. No build step and no dependencies: open `index.html` in a browser,
 or serve the folder with any static host (Netlify, Vercel, GitHub Pages, S3).
 
 ```
-index.html            Home — the full campaign landing page
-about.html            Who We Are — purpose, beliefs, how we work
-mission.html          Our Mission — the four pillars in depth (anchored sections)
-founder.html          Founder Story — Shalimar Abbiusi
-impact.html           Impact & Regions — Africa, Europe, Global Advocacy (anchored)
-projects.html         Projects — what is being scoped and developed
-launch-dinner.html    Launch Dinner — the event, programme, tickets, FAQ
-donate.html           Donate — every way to give, where it goes, FAQ
-contact.html          Contact — form, details, ways to get involved
+index.html            Home: the full campaign landing page
+about.html            Who We Are: purpose, beliefs, how we work
+mission.html          Our Mission: the four pillars in depth (anchored sections)
+founder.html          Founder Story: Shalimar Abbiusi
+impact.html           Impact & Regions: Africa, Europe, Global Advocacy (anchored)
+projects.html         Projects: what is being scoped and developed
+launch-dinner.html    Launch Dinner: the event, programme, tickets, FAQ
+donate.html           Donate: every way to give, where it goes, FAQ
+contact.html          Contact: form, details, ways to get involved
 
 styles.css            design tokens, components, light/dark themes, responsive rules
-script.js             theme toggle, dropdowns, mobile menu, reveals, copy-IBAN, forms
+script.js             theme toggle, hero + event sliders, dropdowns, mobile menu,
+                      reveals, copy-IBAN, forms
 assets/               logo-emblem.png, community-school.jpg, advocacy-court.jpg
 pictures/             original source images (not referenced directly by the site)
 ```
@@ -27,11 +28,11 @@ focus. Every item is also a real link, so the top level works without ever openi
 
 | Top level | Links to | Dropdown |
 |---|---|---|
-| Home | `index.html` | — |
+| Home | `index.html` | n/a |
 | About | `about.html` | Who We Are · Our Mission · Founder Story |
 | Our Work | `impact.html` | Impact & Regions · Projects |
 | Get Involved | `donate.html` | Donate · Launch Dinner · Contact |
-| **Donate** (button) | `donate.html` | — |
+| **Donate** (button) | `donate.html` | n/a |
 
 On mobile the same structure appears in the full-screen menu, with each group's children as
 pill links beneath it.
@@ -62,13 +63,14 @@ All colour, type, spacing, and shape values live as custom properties at the top
 | Gold accent | `--gold-700` | `--gold-400` |
 | Hopeful accent | terracotta + emerald | terracotta + emerald |
 
-- **Type** — Fraunces (serif headlines) + Inter (sans body), loaded from Google Fonts with
+- **Type**: Fraunces (serif headlines) + Inter (sans body), loaded from Google Fonts with
   system-serif/sans fallbacks. Sizes use a fluid `clamp()` scale (`--step--1` … `--step-5`).
-- **Themes** — light is defined on bare `:root`; dark is defined twice, once under
+- **Themes**: light is defined on bare `:root`; dark is defined twice, once under
   `prefers-color-scheme` (guarded so an explicit light choice wins) and once under
-  `[data-theme="dark"]`. An inline script in `<head>` applies the stored/system theme
-  before first paint, so there is no flash. The visitor's choice is saved to
-  `localStorage` under `iah-theme`; until they choose, the site follows the OS.
+  `[data-theme="dark"]`. **Light is the default first view on every page**, whatever the
+  visitor's OS setting: dark is only ever applied when they have chosen it with the toggle,
+  which saves to `localStorage` under `iah-theme`. An inline script in `<head>` applies that
+  stored choice before first paint, so there is no flash.
 
 ### Component classes worth knowing
 
@@ -84,9 +86,9 @@ All colour, type, spacing, and shape values live as custom properties at the top
 |---|---|---|
 | `logo-emblem.png` | every page (header, footer, favicon) | Emblem cropped from the supplied lockup |
 | `founder-shalimar.jpg` | `index.html`, `founder.html` | Founder portrait, 781×976 (4:5) |
-| `launch-dinner.jpg` | `index.html`, `launch-dinner.html` | Event card image |
+| `launch-dinner.jpg` | `launch-dinner.html` | Event page hero image |
 | `community-school.jpg` | `index.html`, `about.html`, `impact.html` | Corrected from a 90°-rotated original |
-| `advocacy-court.jpg` | `founder.html` | Court protest — see the credit note below |
+| `advocacy-court.jpg` | `founder.html` | Court protest, see the credit note below |
 | `mission-advocacy.jpg` | `mission.html` | Advocacy & Justice pillar, 4:3 |
 | `mission-community.jpg` | `mission.html` | Community Empowerment pillar, 4:3 |
 
@@ -94,7 +96,7 @@ Each was derived from an original in `pictures/` or from a supplied photograph. 
 repaired on the way in: the schoolchildren photo was stored rotated 90°, and the founder
 portrait arrived with a black frame baked into the file, which has been cropped off.
 
-**The court photograph is a broadcast still from JoyNews (myjoyonline.com)** — it is credited
+**The court photograph is a broadcast still from JoyNews (myjoyonline.com)**. It is credited
 in its caption on `founder.html`. Confirm you have the right to republish it before the site
 goes live, or replace it with an image you own.
 
@@ -104,7 +106,7 @@ The founder portrait is used in both founder boxes site-wide. If you replace it,
 **Placeholders still to replace.** Every one is a `<figure class="media">` holding a
 `.media__art` gradient panel and a `.media__badge` label, marked in the HTML with a comment
 describing the intended photograph. To use a real photo, swap the figure for the `.photo`
-component — no CSS changes needed:
+component, no CSS changes needed:
 
 ```html
 <figure class="photo photo--tall">
@@ -117,14 +119,16 @@ Aspect modifiers: `--tall` / `--portrait` (4:5), `--wide` (16:10), `--square`, `
 (fills a positioned parent, as in the event card), `--framed` (image plus a caption bar). Add
 a `<figcaption>` with a `<b>` first line for a captioned photo.
 
-- **Hero background** — `.hero__media` in `index.html` holds commented-out `<img>` / `<video>`
-  markup. `.hero__scrim` already provides the contrast overlay for a photograph.
-- **Mission pillars** — two gradient panels remain on `mission.html`: Essential Needs and
+- **Hero background**: `.hero__slides` in `index.html` holds the five slider photographs. To
+  change them, swap the `<img>` inside each `.hero__slide` and update the matching `aria-label`
+  on its `[data-hero-go]` dot in `.hero__controls`. Add or remove a slide and its dot together.
+  `.hero__scrim` provides the contrast overlay, so any photograph keeps the headline readable.
+- **Mission pillars**: two gradient panels remain on `mission.html`: Essential Needs and
   Tailored Local Impact. (Advocacy & Justice and Community Empowerment now use photographs.)
-- **Europe / Global Advocacy** — two panels on `impact.html`.
-- **Education tile** — the small panel in the home page welcome section.
-- **Partner logos** — `.partners__list` on `impact.html`.
-- **Project updates** — the placeholder tiles at the foot of `projects.html`.
+- **Europe / Global Advocacy**: two panels on `impact.html`.
+- **Education tile**: the small panel in the home page welcome section.
+- **Partner logos**: `.partners__list` on `impact.html`.
+- **Project updates**: the placeholder tiles at the foot of `projects.html`.
 
 ## Things that still need connecting
 
@@ -132,9 +136,9 @@ a `<figcaption>` with a `<b>` first line for a captioned photo.
 |---|---|---|
 | Contact form | `contact.html` | A form handler (Formspree, Netlify Forms, or your own endpoint). Marked `BACKEND INTEGRATION POINT` in `script.js`. |
 | Newsletter | footer, every page | An email provider. Marked `CMS/ESP INTEGRATION POINT` in `script.js`. |
-| Social links | footer + `contact.html` | Real profile URLs — currently `href="#"`. |
+| Social links | footer + `contact.html` | Real profile URLs, currently `href="#"`. |
 | Registered office | `contact.html` | Marked `TO CONFIRM`; currently reads "Address to be published." |
-| Email address | footer + `contact.html` | `info@iamhumanfdn.org` is assumed from the domain — verify it. |
+| Email address | footer + `contact.html` | `info@iamhumanfdn.org` is assumed from the domain, so verify it. |
 | Privacy / Terms / Accessibility | footer | Pages do not exist yet. |
 
 Live and verified: the GoFundMe link, the Launch Dinner ticket link, and the bank details
@@ -143,7 +147,7 @@ Live and verified: the GoFundMe link, the Launch Dinner ticket link, and the ban
 ## Editorial rules applied
 
 No impact statistics appear anywhere on the site. Regional and project work is labelled with
-honest status tags — *Scoping*, *In development*, *Planned*, *Ongoing* — and `projects.html`
+honest status tags (*Scoping*, *In development*, *Planned*, *Ongoing*) and `projects.html`
 states plainly that figures will be published only once they are real.
 
 ## Accessibility

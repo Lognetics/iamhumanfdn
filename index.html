@@ -3,10 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>I Am Human Foundation — Dignity, Justice &amp; Human Rights</title>
+<title>I Am Human Foundation | Dignity, Justice &amp; Human Rights</title>
 <meta name="description" content="I Am Human Foundation promotes human rights, dignity, justice, and access to essential needs across Africa, Europe, and beyond.">
-<meta name="theme-color" content="#FBF7F0" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#06101E" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FBF7F0">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="I Am Human Foundation">
@@ -26,8 +25,8 @@
 (function () {
   try {
     var stored = localStorage.getItem('iah-theme');
-    var system = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', stored || system);
+    /* Bright by default: dark is opt-in through the toggle, never through the OS. */
+    document.documentElement.setAttribute('data-theme', stored === 'dark' ? 'dark' : 'light');
   } catch (e) {}
 })();
 </script>
@@ -111,7 +110,7 @@
 <!-- ============ HEADER (identical on every page) ============ -->
 <header class="site-header" id="siteHeader">
   <div class="shell site-header__inner">
-    <a class="brand" href="index.html" aria-label="I Am Human Foundation — home">
+    <a class="brand" href="index.html" aria-label="I Am Human Foundation home">
       <img class="brand__mark" src="assets/logo-emblem.png" alt="" width="128" height="128" decoding="async">
       <span class="brand__text">
         <span class="brand__name">I Am Human</span>
@@ -255,17 +254,22 @@
   <!-- ============ 1. HERO ============ -->
   <section class="hero" id="top">
     <div class="hero__media" aria-hidden="true">
-      <!--
-        MEDIA PLACEHOLDER — hero background.
-        Replace the .hero__art block with a photograph or looping video, e.g.
-        <img src="assets/hero-community.jpg" alt="" class="hero__img">
-        <video class="hero__video" autoplay muted loop playsinline poster="assets/hero-poster.jpg">
-          <source src="assets/hero.webm" type="video/webm">
-        </video>
-        Intended imagery: diverse people together — community, dignity, hope.
-      -->
-      <div class="hero__art">
-        <img class="hero__img" src="assets/photos/p54.jpg" alt="" width="1200" height="799" fetchpriority="high" decoding="async">
+      <div class="hero__slides" id="heroSlides">
+        <div class="hero__slide is-active">
+          <img class="hero__img" src="assets/photos/p54.jpg" alt="" width="1200" height="799" fetchpriority="high" decoding="async">
+        </div>
+        <div class="hero__slide">
+          <img class="hero__img" src="assets/photos/p42.jpg" alt="" width="1200" height="802" loading="lazy" decoding="async">
+        </div>
+        <div class="hero__slide">
+          <img class="hero__img" src="assets/photos/p33.jpg" alt="" width="1080" height="786" loading="lazy" decoding="async">
+        </div>
+        <div class="hero__slide">
+          <img class="hero__img" src="assets/photos/p46.jpg" alt="" width="1200" height="802" loading="lazy" decoding="async">
+        </div>
+        <div class="hero__slide">
+          <img class="hero__img" src="assets/photos/p62.jpg" alt="" width="1200" height="799" loading="lazy" decoding="async">
+        </div>
       </div>
       <div class="hero__aurora"></div>
       <div class="hero__grain"></div>
@@ -303,6 +307,28 @@
       </ul>
     </div>
 
+    <div class="hero__controls" id="heroControls">
+      <div class="shell hero__controls-inner">
+        <div class="hero__dots" role="group" aria-label="Choose a hero photograph">
+          <button class="hero__dot is-active" type="button" data-hero-go="0" aria-label="Women cheering at a community gathering" aria-current="true"><span class="hero__dot-fill"></span></button>
+          <button class="hero__dot" type="button" data-hero-go="1" aria-label="Walking through the market with community leaders"><span class="hero__dot-fill"></span></button>
+          <button class="hero__dot" type="button" data-hero-go="2" aria-label="Children holding bags of donated supplies"><span class="hero__dot-fill"></span></button>
+          <button class="hero__dot" type="button" data-hero-go="3" aria-label="A grant presented to market women"><span class="hero__dot-fill"></span></button>
+          <button class="hero__dot" type="button" data-hero-go="4" aria-label="Bread handed out during a street distribution"><span class="hero__dot-fill"></span></button>
+        </div>
+
+        <div class="hero__nav">
+          <button class="hero__nav-btn hero__nav-btn--prev" type="button" data-hero-prev aria-label="Previous photograph">
+            <svg aria-hidden="true"><use href="#i-arrow"/></svg>
+          </button>
+          <p class="hero__counter" aria-hidden="true"><b data-hero-current>1</b><span>/</span><span data-hero-total>5</span></p>
+          <button class="hero__nav-btn" type="button" data-hero-next aria-label="Next photograph">
+            <svg aria-hidden="true"><use href="#i-arrow"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <a class="hero__scroll" href="#launch" aria-label="Scroll to the launch dinner announcement">
       <span class="hero__scroll-line" aria-hidden="true"></span>
       <span>Scroll</span>
@@ -316,9 +342,28 @@
         <div class="event-card__glow" aria-hidden="true"></div>
 
         <div class="event-card__media">
-          <figure class="photo photo--fill">
-            <img src="assets/launch-dinner.jpg" alt="Guests seated around a long table sharing dinner and conversation" width="736" height="978" loading="lazy" decoding="async">
-          </figure>
+          <div class="event-card__slider" data-slider data-slider-interval="4200">
+            <div class="event-card__slides" data-slider-track>
+              <figure class="photo photo--fill event-card__slide is-active" data-slider-slide>
+                <img src="assets/photos/p39.jpg" alt="Shalimar Abbiusi at the panel table of an I Am Human Foundation event" width="810" height="1080" loading="lazy" decoding="async">
+              </figure>
+              <figure class="photo photo--fill event-card__slide" data-slider-slide>
+                <img src="assets/photos/p41.jpg" alt="Shalimar Abbiusi speaking at a podium during a foundation event" width="810" height="1080" loading="lazy" decoding="async">
+              </figure>
+              <figure class="photo photo--fill event-card__slide" data-slider-slide>
+                <img src="assets/photos/p51.jpg" alt="Guests seated together at a foundation event" width="810" height="1080" loading="lazy" decoding="async">
+              </figure>
+              <figure class="photo photo--fill event-card__slide" data-slider-slide>
+                <img src="assets/photos/p37.jpg" alt="The panel table during a foundation event" width="810" height="1080" loading="lazy" decoding="async">
+              </figure>
+            </div>
+            <div class="event-card__slider-dots" role="group" aria-label="Event photographs">
+              <button class="event-card__slider-dot is-active" type="button" data-slider-go="0" aria-label="Photograph 1 of 4" aria-current="true"></button>
+              <button class="event-card__slider-dot" type="button" data-slider-go="1" aria-label="Photograph 2 of 4"></button>
+              <button class="event-card__slider-dot" type="button" data-slider-go="2" aria-label="Photograph 3 of 4"></button>
+              <button class="event-card__slider-dot" type="button" data-slider-go="3" aria-label="Photograph 4 of 4"></button>
+            </div>
+          </div>
           <div class="event-card__date-chip" aria-hidden="true">
             <span class="event-card__day">30</span>
             <span class="event-card__mon">Nov</span>
@@ -371,7 +416,7 @@
 
         <p class="prose reveal" data-reveal data-reveal-delay="3">
           At I Am Human, we believe that every person deserves to live with dignity, justice,
-          and freedom—regardless of race, gender, nationality, or background. Our goal is simple
+          and freedom, regardless of race, gender, nationality, or background. Our goal is simple
           yet powerful: to promote and protect human rights in Africa and around the world.
         </p>
         <p class="prose reveal" data-reveal data-reveal-delay="4">
@@ -382,7 +427,7 @@
 
         <blockquote class="pullquote reveal" data-reveal data-reveal-delay="5">
           <svg class="pullquote__mark" aria-hidden="true"><use href="#i-quote"/></svg>
-          <p>Human rights and basic needs should not be ideals—they should be a reality for all.</p>
+          <p>Human rights and basic needs should not be ideals; they should be a reality for all.</p>
         </blockquote>
       </div>
 
@@ -390,7 +435,7 @@
         <figure class="photo photo--tall reveal" data-reveal data-reveal-delay="2">
           <img src="assets/community-school.jpg" alt="Founder Shalimar Abbiusi walking with a group of schoolchildren in uniform, arm raised in greeting" width="1080" height="613" loading="lazy" decoding="async">
         </figure>
-        <!-- MEDIA PLACEHOLDER — classroom / learning, portrayed with dignity -->
+        <!-- MEDIA PLACEHOLDER: classroom / learning, portrayed with dignity -->
         <figure class="photo photo--small reveal" data-reveal data-reveal-delay="4">
           <img src="assets/photos/p33.jpg" alt="Children standing in a row holding bags of donated supplies" width="1080" height="786" loading="lazy" decoding="async">
         </figure>
@@ -410,7 +455,7 @@
         <p class="eyebrow eyebrow--light reveal" data-reveal><span class="eyebrow__dot" aria-hidden="true"></span> What we do</p>
         <h2 class="h2 reveal" data-reveal data-reveal-delay="1" id="mission-title">Our Mission</h2>
         <p class="section-head__lede reveal" data-reveal data-reveal-delay="2">
-          Four pillars guide every project we build — shaped by the people they serve.
+          Four pillars guide every project we build, shaped by the people they serve.
         </p>
       </header>
 
@@ -497,7 +542,7 @@
         <p class="eyebrow eyebrow--light reveal" data-reveal><span class="eyebrow__dot" aria-hidden="true"></span> Our vision</p>
         <h2 class="h2 reveal" data-reveal data-reveal-delay="1" id="impact-title">A Future Where Humanity Comes First</h2>
         <p class="section-head__lede reveal" data-reveal data-reveal-delay="2">
-          I Am Human Foundation works across Africa, Europe, and beyond — defending dignity,
+          I Am Human Foundation works across Africa, Europe, and beyond, defending dignity,
           supporting vulnerable communities, and making basic human needs accessible to people
           who have been overlooked for too long.
         </p>
@@ -537,14 +582,14 @@
               <h3>Africa</h3>
               <span class="tag tag--gold">Projects in development</span>
             </div>
-            <p>Working alongside local communities on clean water, education, healthcare access, and dignified living conditions — designed around what each community says it needs.</p>
+            <p>Working alongside local communities on clean water, education, healthcare access, and dignified living conditions, designed around what each community says it needs.</p>
           </li>
           <li class="region reveal" data-reveal data-reveal-delay="2">
             <div class="region__head">
               <h3>Europe</h3>
               <span class="tag tag--emerald">Projects in development</span>
             </div>
-            <p>Building awareness, partnerships, and support networks that connect European communities to human-rights work — and stand with people facing discrimination and injustice.</p>
+            <p>Building awareness, partnerships, and support networks that connect European communities to human-rights work, and stand with people facing discrimination and injustice.</p>
           </li>
           <li class="region reveal" data-reveal data-reveal-delay="3">
             <div class="region__head">
@@ -556,7 +601,7 @@
         </ul>
       </div>
 
-      <!-- CMS PLACEHOLDER — partner & supporter logos -->
+      <!-- CMS PLACEHOLDER: partner & supporter logos -->
       <div class="partners reveal" data-reveal data-reveal-delay="3">
         <p class="partners__label">Partners &amp; supporters</p>
         <ul class="partners__list">
@@ -621,7 +666,7 @@
         <li class="give reveal" data-reveal data-reveal-delay="3">
           <span class="give__icon"><svg aria-hidden="true"><use href="#i-ticket"/></svg></span>
           <h3 class="give__title">Tickets</h3>
-          <p class="give__text">Join us at the Launch Dinner — your seat directly supports the foundation’s first projects.</p>
+          <p class="give__text">Join us at the Launch Dinner. Your seat directly supports the foundation’s first projects.</p>
           <a class="btn btn--outline btn--block" href="https://iamhumanfdn.org/ticket-i-am-human-launch-dinner" target="_blank" rel="noopener noreferrer">
             Buy Launch Dinner Ticket
             <svg class="btn__icon btn__icon--end" aria-hidden="true"><use href="#i-arrow"/></svg>
@@ -718,7 +763,7 @@
 <footer class="footer" id="contact-footer">
   <div class="shell footer__grid">
     <div class="footer__brand">
-      <a class="brand brand--footer" href="index.html" aria-label="I Am Human Foundation — home">
+      <a class="brand brand--footer" href="index.html" aria-label="I Am Human Foundation home">
         <img class="brand__mark" src="assets/logo-emblem.png" alt="" width="128" height="128" loading="lazy" decoding="async">
         <span class="brand__text">
           <span class="brand__name">I Am Human</span>
@@ -727,7 +772,7 @@
       </a>
       <p class="footer__mission">
         Promoting human rights, dignity, justice, and access to essential needs across Africa,
-        Europe, and beyond — because everyone matters.
+        Europe, and beyond, because everyone matters.
       </p>
       <ul class="socials" aria-label="Social media">
         <li><a href="#" aria-label="I Am Human Foundation on Instagram"><svg aria-hidden="true"><use href="#i-instagram"/></svg></a></li>

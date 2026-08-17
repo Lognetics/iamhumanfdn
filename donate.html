@@ -3,13 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Donate — I Am Human Foundation</title>
+<title>Donate | I Am Human Foundation</title>
 <meta name="description" content="Give by bank transfer, GoFundMe, or by buying a Launch Dinner ticket. Your contribution brings dignity, justice, and essential support to people who need it most.">
-<meta name="theme-color" content="#FBF7F0" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#06101E" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FBF7F0">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Donate — I Am Human Foundation">
+<meta property="og:title" content="Donate | I Am Human Foundation">
 <meta property="og:description" content="Give by bank transfer, GoFundMe, or by buying a Launch Dinner ticket. Your contribution brings dignity, justice, and essential support to people who need it most.">
 <meta property="og:image" content="assets/logo-emblem.png">
 
@@ -26,8 +25,8 @@
 (function () {
   try {
     var stored = localStorage.getItem('iah-theme');
-    var system = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', stored || system);
+    /* Bright by default: dark is opt-in through the toggle, never through the OS. */
+    document.documentElement.setAttribute('data-theme', stored === 'dark' ? 'dark' : 'light');
   } catch (e) {}
 })();
 </script>
@@ -109,7 +108,7 @@
 <!-- ============ HEADER (identical on every page) ============ -->
 <header class="site-header" id="siteHeader">
   <div class="shell site-header__inner">
-    <a class="brand" href="index.html" aria-label="I Am Human Foundation — home">
+    <a class="brand" href="index.html" aria-label="I Am Human Foundation home">
       <img class="brand__mark" src="assets/logo-emblem.png" alt="" width="128" height="128" decoding="async">
       <span class="brand__text">
         <span class="brand__name">I Am Human</span>
@@ -311,7 +310,7 @@
         <li class="give reveal" data-reveal data-reveal-delay="3">
           <span class="give__icon"><svg aria-hidden="true"><use href="#i-ticket"/></svg></span>
           <h2 class="give__title">Tickets</h2>
-          <p class="give__text">Join us at the Launch Dinner — your seat directly supports the foundation’s first projects, and you get an evening out of it.</p>
+          <p class="give__text">Join us at the Launch Dinner. Your seat directly supports the foundation’s first projects, and you get an evening out of it.</p>
           <a class="btn btn--outline btn--block" href="https://iamhumanfdn.org/ticket-i-am-human-launch-dinner" target="_blank" rel="noopener noreferrer">
             Buy Launch Dinner Ticket
             <svg class="btn__icon btn__icon--end" aria-hidden="true"><use href="#i-arrow"/></svg>
@@ -341,7 +340,7 @@
         <li class="card reveal" data-reveal data-reveal-delay="1">
           <span class="card__icon"><svg aria-hidden="true"><use href="#i-scales"/></svg></span>
           <h3 class="card__title">Advocacy &amp; Justice</h3>
-          <p class="card__text">Standing against arbitrary detention, abuse of power, discrimination, and injustice — including legal support and case monitoring.</p>
+          <p class="card__text">Standing against arbitrary detention, abuse of power, discrimination, and injustice, including legal support and case monitoring.</p>
         </li>
         <li class="card reveal" data-reveal data-reveal-delay="2">
           <span class="card__icon"><svg aria-hidden="true"><use href="#i-drop"/></svg></span>
@@ -384,7 +383,7 @@
         <li class="card reveal" data-reveal data-reveal-delay="3">
           <span class="card__icon"><svg aria-hidden="true"><use href="#i-hands"/></svg></span>
           <h3 class="card__title">Partner with us</h3>
-          <p class="card__text">Organisations, businesses, and community groups who share the mission — we would like to hear from you.</p>
+          <p class="card__text">Organisations, businesses, and community groups who share the mission. We would like to hear from you.</p>
           <div class="card__foot"><a class="card__link" href="contact.html">Start a conversation <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
         </li>
         <li class="card reveal" data-reveal data-reveal-delay="4">
@@ -405,11 +404,11 @@
       <div class="faq reveal" data-reveal data-reveal-delay="1" style="margin-top:2.5rem">
         <details>
           <summary>Which giving method is best?</summary>
-          <p>Bank transfer carries no platform fee, so more of your gift reaches the work — it is the best option for larger or recurring donations. GoFundMe is faster and easier to share, which makes it the better option for one-off gifts and for spreading the campaign.</p>
+          <p>Bank transfer carries no platform fee, so more of your gift reaches the work. It is the best option for larger or recurring donations. GoFundMe is faster and easier to share, which makes it the better option for one-off gifts and for spreading the campaign.</p>
         </details>
         <details>
           <summary>Can I set up a recurring donation?</summary>
-          <p>Yes — a standing order to the bank details above is the simplest way. If you would like to arrange something regular, <a href="contact.html" style="color:var(--gold);font-weight:600">contact us</a> and we will help you set it up.</p>
+          <p>Yes. A standing order to the bank details above is the simplest way. If you would like to arrange something regular, <a href="contact.html" style="color:var(--gold);font-weight:600">contact us</a> and we will help you set it up.</p>
         </details>
         <details>
           <summary>Is my donation tax-deductible?</summary>
@@ -417,7 +416,7 @@
         </details>
         <details>
           <summary>Can I choose which project my donation supports?</summary>
-          <p>For larger gifts, yes — tell us which pillar or project you want to support and we will direct it accordingly. For general donations, funds go where they are most needed across the four pillars.</p>
+          <p>For larger gifts, yes. Tell us which pillar or project you want to support and we will direct it accordingly. For general donations, funds go where they are most needed across the four pillars.</p>
         </details>
         <details>
           <summary>How will I know what my donation achieved?</summary>
@@ -495,7 +494,7 @@
 <footer class="footer" id="contact-footer">
   <div class="shell footer__grid">
     <div class="footer__brand">
-      <a class="brand brand--footer" href="index.html" aria-label="I Am Human Foundation — home">
+      <a class="brand brand--footer" href="index.html" aria-label="I Am Human Foundation home">
         <img class="brand__mark" src="assets/logo-emblem.png" alt="" width="128" height="128" loading="lazy" decoding="async">
         <span class="brand__text">
           <span class="brand__name">I Am Human</span>
@@ -504,7 +503,7 @@
       </a>
       <p class="footer__mission">
         Promoting human rights, dignity, justice, and access to essential needs across Africa,
-        Europe, and beyond — because everyone matters.
+        Europe, and beyond, because everyone matters.
       </p>
       <ul class="socials" aria-label="Social media">
         <li><a href="#" aria-label="I Am Human Foundation on Instagram"><svg aria-hidden="true"><use href="#i-instagram"/></svg></a></li>

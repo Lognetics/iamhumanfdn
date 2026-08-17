@@ -1,5 +1,5 @@
 /* =====================================================================
-   I Am Human Foundation — interactions
+   I Am Human Foundation: interactions
    Small, dependency-free modules. Each guards its own DOM.
    ===================================================================== */
 (function () {
@@ -26,35 +26,192 @@
     var toggle = document.getElementById('themeToggle');
     if (!toggle) return;
 
-    var system = window.matchMedia('(prefers-color-scheme: dark)');
+    var meta = document.querySelector('meta[name="theme-color"]');
     var stored = null;
     try { stored = localStorage.getItem('iah-theme'); } catch (e) {}
 
     function apply(theme, persist) {
       root.setAttribute('data-theme', theme);
-      var toDark = theme === 'light';
-      toggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
-      toggle.setAttribute('aria-label', 'Switch to ' + (toDark ? 'dark' : 'light') + ' theme');
+      var isDark = theme === 'dark';
+      toggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+      toggle.setAttribute('aria-label', 'Switch to ' + (isDark ? 'light' : 'dark') + ' theme');
+      if (meta) meta.setAttribute('content', isDark ? '#06101E' : '#FBF7F0');
       if (persist) {
         try { localStorage.setItem('iah-theme', theme); } catch (e) {}
       }
     }
 
-    apply(stored || (system.matches ? 'dark' : 'light'), false);
+    // Bright is the first impression. Dark is only ever an explicit, remembered choice,
+    // so a visitor on an OS-wide dark setting still lands on the light palette.
+    apply(stored === 'dark' ? 'dark' : 'light', false);
 
     toggle.addEventListener('click', function () {
       var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
       apply(next, true);
     });
+  })();
 
-    // Follow the OS only while the visitor has not made an explicit choice.
-    var onSystemChange = function (e) {
-      var hasChoice = false;
-      try { hasChoice = !!localStorage.getItem('iah-theme'); } catch (err) {}
-      if (!hasChoice) apply(e.matches ? 'dark' : 'light', false);
+  /* ---------- Hero slider ---------- */
+  (function heroSliderModule() {
+    var track = document.getElementById('heroSlides');
+    var ui = document.getElementById('heroControls');
+    if (!track || !ui) return;
+
+    var slides = Array.prototype.slice.call(track.querySelectorAll('.hero__slide'));
+    var dots = Array.prototype.slice.call(ui.querySelectorAll('[data-hero-go]'));
+    var current = ui.querySelector('[data-hero-current]');
+    var total = ui.querySelector('[data-hero-total]');
+    var prevBtn = ui.querySelector('[data-hero-prev]');
+    var nextBtn = ui.querySelector('[data-hero-next]');
+    if (slides.length < 2) return;
+
+    var INTERVAL = 6000;
+    var index = 0;
+    var timer = null;
+    var holds = 0; // hover, focus and hidden-tab holds stack
+
+    ui.style.setProperty('--hero-interval', (INTERVAL / 1000) + 's');
+    if (total) total.textContent = String(slides.length);
+
+    function show(next) {
+      index = (next + slides.length) % slides.length;
+      slides.forEach(function (slide, i) {
+        slide.classList.toggle('is-active', i === index);
+      });
+      dots.forEach(function (dot, i) {
+        var on = i === index;
+        dot.classList.toggle('is-active', on);
+        if (on) dot.setAttribute('aria-current', 'true');
+        else dot.removeAttribute('aria-current');
+      });
+      if (current) current.textContent = String(index + 1);
+    }
+
+    function go(next) {
+      show(next);
+      restart(); // a manual move gives the new slide a full turn on screen
+    }
+
+    function restart() {
+      stop();
+      if (reduceMotion.matches || holds > 0) return;
+      timer = setInterval(function () { show(index + 1); }, INTERVAL);
+    }
+
+    function stop() {
+      if (timer) { clearInterval(timer); timer = null; }
+    }
+
+    function hold(on) {
+      holds = Math.max(0, holds + (on ? 1 : -1));
+      ui.classList.toggle('is-paused', holds > 0);
+      if (holds > 0) stop();
+      else restart();
+    }
+
+    dots.forEach(function (dot) {
+      dot.addEventListener('click', function () {
+        go(parseInt(dot.getAttribute('data-hero-go'), 10) || 0);
+      });
+    });
+    if (prevBtn) prevBtn.addEventListener('click', function () { go(index - 1); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { go(index + 1); });
+
+    // Arrow keys work whenever focus is somewhere in the slider controls.
+    ui.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - 1); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); }
+    });
+
+    var hero = ui.closest('.hero') || ui;
+    // Only the controls pause on hover: the hero fills the viewport, so pausing on
+    // the whole section would stall the slider whenever the cursor simply rests there.
+    ui.addEventListener('mouseenter', function () { hold(true); });
+    ui.addEventListener('mouseleave', function () { hold(false); });
+    ui.addEventListener('focusin', function () { hold(true); });
+    ui.addEventListener('focusout', function () { hold(false); });
+    document.addEventListener('visibilitychange', function () { hold(document.hidden); });
+
+    // Swipe, with a threshold that ignores vertical scrolling.
+    var startX = 0, startY = 0, tracking = false;
+    hero.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1) return;
+      tracking = true;
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: true });
+    hero.addEventListener('touchend', function (e) {
+      if (!tracking) return;
+      tracking = false;
+      var touch = e.changedTouches[0];
+      var dx = touch.clientX - startX;
+      var dy = touch.clientY - startY;
+      if (Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy)) return;
+      go(dx < 0 ? index + 1 : index - 1);
+    }, { passive: true });
+
+    if (reduceMotion.matches) ui.classList.add('is-static');
+    var onMotionChange = function () {
+      ui.classList.toggle('is-static', reduceMotion.matches);
+      restart();
     };
-    if (system.addEventListener) system.addEventListener('change', onSystemChange);
-    else if (system.addListener) system.addListener(onSystemChange);
+    if (reduceMotion.addEventListener) reduceMotion.addEventListener('change', onMotionChange);
+    else if (reduceMotion.addListener) reduceMotion.addListener(onMotionChange);
+
+    show(0);
+    restart();
+  })();
+
+  /* ---------- Generic fading sliders (event card, etc.) ---------- */
+  (function sliderModule() {
+    var sliders = document.querySelectorAll('[data-slider]');
+    if (!sliders.length) return;
+
+    Array.prototype.forEach.call(sliders, function (slider) {
+      var slides = Array.prototype.slice.call(slider.querySelectorAll('[data-slider-slide]'));
+      var dots = Array.prototype.slice.call(slider.querySelectorAll('[data-slider-go]'));
+      if (slides.length < 2) return;
+
+      var interval = parseInt(slider.getAttribute('data-slider-interval'), 10) || 5000;
+      var index = 0;
+      var timer = null;
+
+      function show(next) {
+        index = (next + slides.length) % slides.length;
+        slides.forEach(function (slide, i) { slide.classList.toggle('is-active', i === index); });
+        dots.forEach(function (dot, i) {
+          var on = i === index;
+          dot.classList.toggle('is-active', on);
+          if (on) dot.setAttribute('aria-current', 'true');
+          else dot.removeAttribute('aria-current');
+        });
+      }
+
+      function start() {
+        stop();
+        if (reduceMotion.matches) return;
+        timer = setInterval(function () { show(index + 1); }, interval);
+      }
+      function stop() { if (timer) { clearInterval(timer); timer = null; } }
+
+      dots.forEach(function (dot) {
+        dot.addEventListener('click', function () {
+          show(parseInt(dot.getAttribute('data-slider-go'), 10) || 0);
+          start();
+        });
+      });
+
+      slider.addEventListener('mouseenter', stop);
+      slider.addEventListener('mouseleave', start);
+      slider.addEventListener('focusin', stop);
+      slider.addEventListener('focusout', start);
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) stop(); else start();
+      });
+
+      show(0);
+      start();
+    });
   })();
 
   /* ---------- Header state + scroll progress ---------- */
@@ -289,7 +446,7 @@
         var text = btn.getAttribute('data-copy') || '';
 
         function done(ok) {
-          if (!ok) { toast('Could not copy — please select the IBAN manually.'); return; }
+          if (!ok) { toast('Could not copy. Please select the IBAN manually.'); return; }
           btn.classList.add('is-done');
           var label = btn.querySelector('.copy-btn__label');
           var original = label ? label.textContent : '';
@@ -328,8 +485,8 @@
         return;
       }
 
-      // CMS/ESP INTEGRATION POINT — POST `value` to the newsletter provider here.
-      if (msg) { msg.style.color = 'var(--emerald)'; msg.textContent = 'Thank you — we will be in touch soon.'; }
+      // CMS/ESP INTEGRATION POINT: POST `value` to the newsletter provider here.
+      if (msg) { msg.style.color = 'var(--emerald)'; msg.textContent = 'Thank you. We will be in touch soon.'; }
       form.reset();
       toast('Thank you for joining the movement');
     });
@@ -361,9 +518,9 @@
         say('Please add a little more detail to your message.', false); message.focus(); return;
       }
 
-      // BACKEND INTEGRATION POINT — POST these fields to your form handler
+      // BACKEND INTEGRATION POINT: POST these fields to your form handler
       // (Formspree, Netlify Forms, or your own endpoint) and remove the notice below.
-      say('Thank you — your message has been prepared. Connect a form handler to deliver it.', true);
+      say('Thank you. Your message has been prepared. Connect a form handler to deliver it.', true);
       form.reset();
       toast('Thank you for reaching out');
     });

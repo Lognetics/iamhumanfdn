@@ -3,13 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Contact — I Am Human Foundation</title>
+<title>Contact | I Am Human Foundation</title>
 <meta name="description" content="Get in touch with I Am Human Foundation about partnerships, media, donations, volunteering, or a situation that needs a voice.">
-<meta name="theme-color" content="#FBF7F0" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#06101E" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FBF7F0">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Contact — I Am Human Foundation">
+<meta property="og:title" content="Contact | I Am Human Foundation">
 <meta property="og:description" content="Get in touch with I Am Human Foundation about partnerships, media, donations, volunteering, or a situation that needs a voice.">
 <meta property="og:image" content="assets/logo-emblem.png">
 
@@ -26,8 +25,8 @@
 (function () {
   try {
     var stored = localStorage.getItem('iah-theme');
-    var system = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', stored || system);
+    /* Bright by default: dark is opt-in through the toggle, never through the OS. */
+    document.documentElement.setAttribute('data-theme', stored === 'dark' ? 'dark' : 'light');
   } catch (e) {}
 })();
 </script>
@@ -109,7 +108,7 @@
 <!-- ============ HEADER (identical on every page) ============ -->
 <header class="site-header" id="siteHeader">
   <div class="shell site-header__inner">
-    <a class="brand" href="index.html" aria-label="I Am Human Foundation — home">
+    <a class="brand" href="index.html" aria-label="I Am Human Foundation home">
       <img class="brand__mark" src="assets/logo-emblem.png" alt="" width="128" height="128" decoding="async">
       <span class="brand__text">
         <span class="brand__name">I Am Human</span>
@@ -262,7 +261,7 @@
       </nav>
       <p class="eyebrow eyebrow--light reveal" data-reveal><span class="eyebrow__dot" aria-hidden="true"></span> Contact</p>
       <h1 class="page-hero__title reveal" data-reveal data-reveal-delay="1">Join Our <em>Movement</em></h1>
-      <p class="page-hero__lede reveal" data-reveal data-reveal-delay="2">Whether you want to partner, volunteer, give, report a situation that needs attention, or simply understand the work better — we would like to hear from you.</p>
+      <p class="page-hero__lede reveal" data-reveal data-reveal-delay="2">Whether you want to partner, volunteer, give, report a situation that needs attention, or simply understand the work better, we would like to hear from you.</p>
     </div>
   </section>
 
@@ -359,7 +358,7 @@
         <li class="card reveal" data-reveal data-reveal-delay="1">
           <span class="card__icon"><svg aria-hidden="true"><use href="#i-heart"/></svg></span>
           <h3 class="card__title">Give</h3>
-          <p class="card__text">Bank transfer, GoFundMe, or a Launch Dinner ticket — every route supports the same work.</p>
+          <p class="card__text">Bank transfer, GoFundMe, or a Launch Dinner ticket: every route supports the same work.</p>
           <div class="card__foot"><a class="card__link" href="donate.html">Ways to give <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
         </li>
         <li class="card reveal" data-reveal data-reveal-delay="2">
@@ -444,7 +443,7 @@
 <footer class="footer" id="contact-footer">
   <div class="shell footer__grid">
     <div class="footer__brand">
-      <a class="brand brand--footer" href="index.html" aria-label="I Am Human Foundation — home">
+      <a class="brand brand--footer" href="index.html" aria-label="I Am Human Foundation home">
         <img class="brand__mark" src="assets/logo-emblem.png" alt="" width="128" height="128" loading="lazy" decoding="async">
         <span class="brand__text">
           <span class="brand__name">I Am Human</span>
@@ -453,7 +452,7 @@
       </a>
       <p class="footer__mission">
         Promoting human rights, dignity, justice, and access to essential needs across Africa,
-        Europe, and beyond — because everyone matters.
+        Europe, and beyond, because everyone matters.
       </p>
       <ul class="socials" aria-label="Social media">
         <li><a href="#" aria-label="I Am Human Foundation on Instagram"><svg aria-hidden="true"><use href="#i-instagram"/></svg></a></li>
