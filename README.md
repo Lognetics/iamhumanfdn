@@ -65,15 +65,26 @@ The ramps are sampled from the logo emblem, so the palette and the mark agree.
 |---|---|---|
 | Background | warm ivory `#FBF6EE` | deep teal-navy `#041219` |
 | Text | teal ink `#0C2731` | ivory `#EFE6D8` |
-| Brand accent | `--teal-700` | `--teal-400` |
-| Gold accent (CTAs) | `--gold-700` | `--gold-400` |
+| Headline emphasis, links | `--grad-brand-text` (teal → leaf) | brightened teal → leaf |
+| Gold accent (CTAs, icon chips, tags) | `--gold-700` | `--gold-400` |
 | Hopeful accent | terracotta + leaf green | terracotta + leaf green |
 
 - **Brand colour**: `--teal-*` and `--leaf-*` are lifted straight off `logo-emblem.png`
-  (`#0C3A48` → `#1FA5C9` → `#2FB47C`). They drive the eyebrow dots, section rules, scroll
-  progress bar, pillar icons, nav submenu icons, hero and closing auroras, the globe, the
-  `.tag--teal` chip, and the `.btn--teal` button. Gold is now reserved for primary CTAs, so
-  the two do not compete. `--navy-*` keeps its name but holds the logo's teal-navy.
+  (`#0C3A48` → `#1FA5C9` → `#2FB47C`). `--navy-*` keeps its name but holds the logo's
+  teal-navy.
+- **The dividing line is text vs. furniture.** Everything that is *read* is the logo colour:
+  the italic `<em>` emphasis in every headline (`--grad-brand-text`, and
+  `--grad-brand-text-light` for the same text on dark sections), `.subhead`, `.bigquote`,
+  pull-quotes, `.card__link`, `.btn--text`, breadcrumbs, footer and prose links, and the
+  display numerals (hero counter, event date chip, `.step__num`). Gold stays on the
+  *furniture*: primary buttons, icon chips, status tags, focus rings and hover borders. The
+  two no longer compete for the same job.
+- Brand colour also drives the eyebrow dots, section rules, scroll progress bar, pillar
+  icons, nav submenu icons, hero and closing auroras, the globe, `.tag--teal` and
+  `.btn--teal`.
+- Contrast on the light ground: `--teal-700` 7.6:1, `--leaf-700` 6.1:1, and the gradient's
+  lightest mid-stop `--teal-600` 4.1:1 (it only ever carries large display type, where the
+  AA floor is 3:1). On the dark ground every stop clears 9:1.
 
 - **Type**: Fraunces (serif headlines) + Inter (sans body), loaded from Google Fonts with
   system-serif/sans fallbacks. Sizes use a fluid `clamp()` scale (`--step--1` … `--step-5`).
