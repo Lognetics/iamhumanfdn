@@ -214,6 +214,34 @@
     });
   })();
 
+  /* ---------- Video facades ---------- */
+  (function videoModule() {
+    var buttons = document.querySelectorAll('[data-video]');
+    if (!buttons.length) return;
+
+    Array.prototype.forEach.call(buttons, function (btn) {
+      btn.addEventListener('click', function () {
+        var id = btn.getAttribute('data-video');
+        var title = btn.getAttribute('data-video-title') || 'Video';
+        if (!id) return;
+
+        var frame = document.createElement('iframe');
+        // youtube-nocookie keeps the visitor out of YouTube's ad cookies, and nothing
+        // is requested from Google at all until this click.
+        frame.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) +
+                    '?autoplay=1&rel=0&modestbranding=1';
+        frame.title = title;
+        frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        frame.setAttribute('allowfullscreen', '');
+        frame.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+
+        var wrap = btn.closest('.video') || btn.parentNode;
+        btn.remove();
+        wrap.appendChild(frame);
+      });
+    });
+  })();
+
   /* ---------- Header state + scroll progress ---------- */
   (function scrollModule() {
     var header = document.getElementById('siteHeader');
@@ -467,36 +495,156 @@
     });
   })();
 
-  /* ---------- Newsletter placeholder ---------- */
+  /* ---------- Form delivery ---------- */
+  /* Both forms post to /api/contact. If that endpoint is missing or the mail
+     service is not configured yet, we hand the message to the visitor's own mail
+     client rather than pretending it was sent. */
+  var MAIL_TO = 'contact@iamhumanfdn.org';
+
+  function mailtoFallback(subject, lines) {
+    var body = lines.filter(Boolean).join('\n');
+    window.location.href = 'mailto:' + MAIL_TO +
+      '?subject=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(body);
+  }
+
+  function postForm(payload) {
+    return fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (res) {
+      if (res.ok) return { ok: true };
+      // 501 means delivery is not configured; anything else is a real failure.
+      return res.json().catch(function () { return {}; }).then(function (data) {
+        return { ok: false, status: res.status, error: data.error };
+      });
+    });
+  }
+
+  /* ---------- Mailing list ---------- */
   (function subscribeModule() {
     var form = document.querySelector('.subscribe');
     var msg = document.getElementById('subMsg');
     if (!form) return;
 
+    function say(text, ok) {
+      if (!msg) return;
+      msg.style.color = ok ? 'var(--emerald)' : 'var(--accent)';
+      msg.textContent = text;
+    }
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var input = form.querySelector('input[type="email"]');
       var value = input ? input.value.trim() : '';
-      var valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-
-      if (!valid) {
-        if (msg) { msg.style.color = 'var(--accent)'; msg.textContent = 'Please enter a valid email address.'; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        say('Please enter a valid email address.', false);
         if (input) input.focus();
         return;
       }
 
-      // CMS/ESP INTEGRATION POINT: POST `value` to the newsletter provider here.
-      if (msg) { msg.style.color = 'var(--emerald)'; msg.textContent = 'Thank you. We will be in touch soon.'; }
-      form.reset();
-      toast('Thank you for joining the movement');
+      // A checkbox reports its value whether or not it is ticked, so read .checked.
+      var wantsToVolunteer = !!form.querySelector('[name="interests"]:checked');
+      var interests = wantsToVolunteer ? 'Volunteering' : 'Project updates';
+      say('Sending…', true);
+
+      postForm({
+        type: 'subscribe',
+        email: value,
+        interests: interests,
+        company: (form.querySelector('[name="company"]') || {}).value || ''
+      }).then(function (result) {
+        if (result.ok) {
+          say('Thank you. You are on the list.', true);
+          form.reset();
+          toast('Thank you for joining the movement');
+          return;
+        }
+        say('Opening your email app so this reaches us directly.', true);
+        mailtoFallback('Mailing list signup', [
+          'Please add me to the I Am Human Foundation mailing list.',
+          '',
+          'Email: ' + value,
+          'Interested in: ' + interests
+        ]);
+      }).catch(function () {
+        say('Opening your email app so this reaches us directly.', true);
+        mailtoFallback('Mailing list signup', ['Please add me to the mailing list.', '', 'Email: ' + value]);
+      });
     });
   })();
 
-  /* ---------- Contact form (no backend yet) ---------- */
+  /* ---------- Volunteer / mailing list signup ---------- */
+  (function volunteerFormModule() {
+    var form = document.querySelector('form[data-form="volunteer"]');
+    if (!form) return;
+    var msg = form.querySelector('.form__msg');
+    var submit = form.querySelector('button[type="submit"]');
+
+    function say(text, ok) {
+      if (!msg) return;
+      msg.style.color = ok ? 'var(--emerald)' : 'var(--accent)';
+      msg.textContent = text;
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = form.querySelector('#vEmail');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
+        say('Please enter a valid email address.', false); email.focus(); return;
+      }
+
+      var interests = Array.prototype.map.call(
+        form.querySelectorAll('input[name="interests"]:checked'),
+        function (box) { return box.value; }
+      );
+
+      var payload = {
+        type: 'subscribe',
+        name: (form.querySelector('#vName') || {}).value || '',
+        email: email.value.trim(),
+        subject: (form.querySelector('#vWhere') || {}).value || '',
+        interests: interests,
+        company: (form.querySelector('[name="company"]') || {}).value || ''
+      };
+
+      if (submit) submit.disabled = true;
+      say('Sending…', true);
+
+      postForm(payload).then(function (result) {
+        if (submit) submit.disabled = false;
+        if (result.ok) {
+          say('Thank you. You are on the list, and we will be in touch.', true);
+          form.reset();
+          toast('Welcome to the movement');
+          return;
+        }
+        say('Opening your email app so this reaches us directly.', true);
+        mailtoFallback('Volunteer and mailing list signup', [
+          'Please add me to the I Am Human Foundation mailing list.',
+          '',
+          'Name: ' + payload.name,
+          'Email: ' + payload.email,
+          'Based in: ' + payload.subject,
+          'Interested in: ' + interests.join(', ')
+        ]);
+      }).catch(function () {
+        if (submit) submit.disabled = false;
+        say('Opening your email app so this reaches us directly.', true);
+        mailtoFallback('Volunteer and mailing list signup', [
+          'Please add me to the mailing list.', '', 'Email: ' + payload.email
+        ]);
+      });
+    });
+  })();
+
+  /* ---------- Contact form ---------- */
   (function contactFormModule() {
     var form = document.querySelector('form[data-form="contact"]');
     if (!form) return;
     var msg = form.querySelector('.form__msg');
+    var submit = form.querySelector('button[type="submit"]');
 
     function say(text, ok) {
       if (!msg) return;
@@ -508,6 +656,7 @@
       e.preventDefault();
       var name = form.querySelector('#cName');
       var email = form.querySelector('#cEmail');
+      var subject = form.querySelector('#cSubject');
       var message = form.querySelector('#cMessage');
 
       if (!name.value.trim()) { say('Please tell us your name.', false); name.focus(); return; }
@@ -518,11 +667,42 @@
         say('Please add a little more detail to your message.', false); message.focus(); return;
       }
 
-      // BACKEND INTEGRATION POINT: POST these fields to your form handler
-      // (Formspree, Netlify Forms, or your own endpoint) and remove the notice below.
-      say('Thank you. Your message has been prepared. Connect a form handler to deliver it.', true);
-      form.reset();
-      toast('Thank you for reaching out');
+      var payload = {
+        type: 'contact',
+        name: name.value.trim(),
+        email: email.value.trim(),
+        subject: subject ? subject.value : '',
+        message: message.value.trim(),
+        company: (form.querySelector('[name="company"]') || {}).value || ''
+      };
+
+      if (submit) submit.disabled = true;
+      say('Sending…', true);
+
+      postForm(payload).then(function (result) {
+        if (submit) submit.disabled = false;
+        if (result.ok) {
+          say('Thank you. Your message has been sent, and we will reply to ' + payload.email + '.', true);
+          form.reset();
+          toast('Thank you for reaching out');
+          return;
+        }
+        say('Opening your email app so this reaches us directly. You can also write to ' + MAIL_TO + '.', true);
+        mailtoFallback(payload.subject || 'Website enquiry', [
+          payload.message, '', '---',
+          'From: ' + payload.name,
+          'Email: ' + payload.email,
+          'Subject: ' + payload.subject
+        ]);
+      }).catch(function () {
+        if (submit) submit.disabled = false;
+        say('Opening your email app so this reaches us directly. You can also write to ' + MAIL_TO + '.', true);
+        mailtoFallback(payload.subject || 'Website enquiry', [
+          payload.message, '', '---',
+          'From: ' + payload.name,
+          'Email: ' + payload.email
+        ]);
+      });
     });
   })();
 
