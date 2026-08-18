@@ -66,25 +66,34 @@ The ramps are sampled from the logo emblem, so the palette and the mark agree.
 | Background | warm ivory `#FBF6EE` | deep teal-navy `#041219` |
 | Text | teal ink `#0C2731` | ivory `#EFE6D8` |
 | Headline emphasis, links | `--grad-brand-text` (teal → leaf) | brightened teal → leaf |
-| Gold accent (CTAs, icon chips, tags) | `--gold-700` | `--gold-400` |
+| Buttons and controls | `--grad-brand-btn` | same |
+| Gold (icon plates, status tags, globe) | `--gold-700` | `--gold-400` |
 | Hopeful accent | terracotta + leaf green | terracotta + leaf green |
 
 - **Brand colour**: `--teal-*` and `--leaf-*` are lifted straight off `logo-emblem.png`
   (`#0C3A48` → `#1FA5C9` → `#2FB47C`). `--navy-*` keeps its name but holds the logo's
   teal-navy.
-- **The dividing line is text vs. furniture.** Everything that is *read* is the logo colour:
-  the italic `<em>` emphasis in every headline (`--grad-brand-text`, and
-  `--grad-brand-text-light` for the same text on dark sections), `.subhead`, `.bigquote`,
-  pull-quotes, `.card__link`, `.btn--text`, breadcrumbs, footer and prose links, and the
-  display numerals (hero counter, event date chip, `.step__num`). Gold stays on the
-  *furniture*: primary buttons, icon chips, status tags, focus rings and hover borders. The
-  two no longer compete for the same job.
-- Brand colour also drives the eyebrow dots, section rules, scroll progress bar, pillar
-  icons, nav submenu icons, hero and closing auroras, the globe, `.tag--teal` and
-  `.btn--teal`.
-- Contrast on the light ground: `--teal-700` 7.6:1, `--leaf-700` 6.1:1, and the gradient's
-  lightest mid-stop `--teal-600` 4.1:1 (it only ever carries large display type, where the
-  AA floor is 3:1). On the dark ground every stop clears 9:1.
+- **Text and every interactive control is the logo colour.** That covers the italic `<em>`
+  emphasis in every headline (`--grad-brand-text`, with `--grad-brand-text-light` for the
+  same text on dark bands), `.subhead`, `.bigquote`, pull-quotes, `.card__link`,
+  `.btn--text`, breadcrumbs, prose and footer links, display numerals (hero counter, event
+  date chip, `.step__num`), plus all buttons, the floating mobile CTA, the mailing-list
+  submit, the featured-card ring and its "Most popular" flag, the copy-IBAN button, form
+  focus rings, hover borders and `::selection`.
+- **Three brand gradients, because they do different jobs.** `--grad-brand` is the bright
+  cut, for things that carry no text: eyebrow dots, section rules, the scroll progress bar,
+  pillar icons. `--grad-brand-btn` is a deliberately deeper cut for anything with white
+  text on it. `--grad-brand-text` clips to headline type.
+- **Do not put white text on `--grad-brand`.** Its light stops are 2.9:1 and 2.6:1 against
+  white, which fails WCAG AA outright. `--grad-brand-btn` exists for that reason: its stops
+  measure 8.1:1, 5.6:1 and 5.3:1, so the text stays legible across the whole sweep and
+  through the hover shift.
+- Contrast for brand *text*: on ivory, `--teal-700` 7.6:1 and `--leaf-700` 6.1:1, with the
+  lightest mid-stop `--teal-600` at 4.1:1 (it only ever carries large display type, where
+  the AA floor is 3:1). On the dark ground every stop clears 9:1.
+- **What is still gold**, deliberately, as the warm counterweight: the icon plates on cards,
+  giving options and event details; `.tag--gold` status chips; the globe pins; and the
+  founder plate glow.
 
 - **Type**: Fraunces (serif headlines) + Inter (sans body), loaded from Google Fonts with
   system-serif/sans fallbacks. Sizes use a fluid `clamp()` scale (`--step--1` … `--step-5`).
