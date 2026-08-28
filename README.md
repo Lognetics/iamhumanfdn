@@ -1,10 +1,15 @@
 # I Am Human Foundation website
 
-A ten-page static site with one serverless function for email. No build step and no
+An eleven-page static site with one serverless function for email. No build step and no
 dependencies: open `index.html` in a browser, or deploy the folder to Vercel.
 
+**`index.html` is the Second Chance Initiative, not the landing page.** The campaign is
+what the site opens on and what the logo returns to; the general landing page lives at
+`home.html` and is reached through the "Home" nav item.
+
 ```
-index.html            Home: hero slider, featured project, mission, founder, giving
+index.html            THE SECOND CHANCE INITIATIVE: the full prospectus, and the site root
+home.html             Landing page: hero slider, featured project, mission, founder, giving
 about.html            Who We Are: purpose, beliefs, how we work
 mission.html          Our Mission: the five pillars in depth (anchored sections)
 founder.html          Founder Story: Shalimar Abbiusi, with the video of her account
@@ -25,23 +30,36 @@ pictures/             original source images (not referenced directly by the sit
 
 ## Navigation
 
-The header carries four top-level items; three open a dropdown on hover **and** on keyboard
+The header carries five top-level items; three open a dropdown on hover **and** on keyboard
 focus. Every item is also a real link, so the top level works without ever opening a menu.
 
 | Top level | Links to | Dropdown |
 |---|---|---|
-| Home | `index.html` | n/a |
+| Second Chance | `index.html` | n/a |
+| Home | `home.html` | n/a |
 | About | `about.html` | Who We Are · Our Mission · Founder Story |
 | Our Work | `impact.html` | Impact & Regions · Projects · Press & Media |
 | Get Involved | `donate.html` | Donate · Our Launch · Contact |
 | **Donate** (button) | `donate.html` | n/a |
 
+The brand logo, top left, points at `index.html`, the Second Chance Initiative. That is
+deliberate: the campaign is the front door. "Second Chance" also carries a small brand dot
+(`.nav__link--flag`) so it reads as the flagship rather than as one item among five.
+
 On mobile the same structure appears in the full-screen menu, with each group's children as
 pill links beneath it.
 
-### Keeping the ten headers in sync
+### The Second Chance page has its own menu
 
-The header, mobile menu, footer, and icon sprite are **byte-identical in all ten pages**.
+Below the site header, `index.html` carries a second sticky bar (`.subnav`) listing the nine
+sections of the prospectus. `subnavModule` in `script.js` drives it: it offsets anchor jumps
+past both sticky bars, marks the current section with an IntersectionObserver, and scrolls
+the active chip into view when the bar itself has to scroll sideways on narrow screens. The
+bar only exists on that page; the module returns early when `#subnav` is absent.
+
+### Keeping the eleven headers in sync
+
+The header, mobile menu, footer, and icon sprite are **byte-identical in all eleven pages**.
 Only two things differ per page: the `<title>`/`<meta description>`, and the `data-page`
 attribute on `<body>`. The active nav item is derived from `data-page` in CSS, so changing
 which item is highlighted never means editing markup.
@@ -51,7 +69,22 @@ drifted apart:
 
 ```bash
 grep -c 'nav__item--has-menu' *.html      # expect 3 in every file
+grep -c 'data-nav="second"' *.html        # expect 1 in every file
 grep -c 'press.html' *.html               # expect 3 in every file (nav, mobile, footer)
+```
+
+The icon sprite must also be identical. Every `href="#i-…"` has to have a matching
+`<symbol id="i-…">` **in the same file**. A sprite is per-document, so an icon used on one
+page but defined only on another renders as an empty box:
+
+```bash
+python3 - <<'EOF'
+import glob, re
+for f in sorted(glob.glob('*.html')):
+    s = open(f).read()
+    missing = set(re.findall(r'href="#(i-[a-z-]+)"', s)) - set(re.findall(r'symbol id="(i-[a-z-]+)"', s))
+    if missing: print(f, sorted(missing))
+EOF
 ```
 
 ## Design system
@@ -121,6 +154,31 @@ the visitor presses play. Nothing is requested from Google before that click.
 **The gallery is a masonry**, `columns: 4` stepping down to 2, so every photograph keeps its
 own proportions. Do not add fixed heights or `object-fit: cover` back to `.gallery__item img`;
 that is what was cropping the landscape shots in half.
+
+## The Second Chance Initiative page
+
+`index.html` is a straight transcription of the Founding Partnership & Sponsorship
+Prospectus, section for section, with nothing dropped: the conviction and its three-line
+creed, the four programme routes, the reception's four facts and six-step run sheet, the
+five partnership tiers, the full benefit list for all five, individual tickets and the
+Friend tier with both footnotes, the six ways to open a door, the track record with its
+three headline numbers, and the closing detail rows.
+
+Its components are namespaced and live in section 9 of `styles.css`, so nothing there
+touches the rest of the site: `.sc-hero` · `.subnav` · `.creed` · `.sc-coda` · `.spec-grid`
+· `.runsheet` · `.tiers` + `.tier--top` · `.benefit` + `.ticklist` · `.door-grid` ·
+`.recgrid` · `.statline` · `.deets`.
+
+Two things worth knowing before editing it:
+
+- **The tick marks in `.ticklist` are drawn with a CSS mask**, not an icon, so they inherit
+  `--brand` on light cards and `--teal-300` on the inverted ones without needing two sprites.
+- **Any `<img>` sized by `aspect-ratio` also needs `height: auto`.** The `height=""`
+  attribute is a presentational hint that otherwise wins, which is what stretched the track
+  record photos into columns on the first pass.
+
+Six icons were added to the sprite for this page and back-ported to every other page:
+`i-crown`, `i-gem`, `i-star`, `i-tools`, `i-briefcase`, `i-link`.
 
 ## Images
 

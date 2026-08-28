@@ -393,6 +393,65 @@
     sections.forEach(function (s) { io.observe(s); });
   })();
 
+  /* ---------- Second Chance page: its own section menu ---------- */
+  (function subnavModule() {
+    var bar = document.getElementById('subnav');
+    if (!bar) return;
+
+    var links = Array.prototype.slice.call(bar.querySelectorAll('.subnav__link'));
+    if (!links.length) return;
+
+    // The sticky site header sits above this bar, so offset anchors past both.
+    var header = document.getElementById('siteHeader');
+    function offset() {
+      return (header ? header.offsetHeight : 0) + bar.offsetHeight + 8;
+    }
+    bar.style.setProperty('--subnav-top', (header ? header.offsetHeight : 0) + 'px');
+    bar.style.top = (header ? header.offsetHeight : 0) + 'px';
+
+    links.forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        var id = (link.getAttribute('href') || '').slice(1);
+        var target = id && document.getElementById(id);
+        if (!target) return;
+        e.preventDefault();
+        window.scrollTo({
+          top: target.getBoundingClientRect().top + window.scrollY - offset(),
+          behavior: 'smooth'
+        });
+        history.replaceState(null, '', '#' + id);
+      });
+    });
+
+    if (!('IntersectionObserver' in window)) return;
+
+    var map = {};
+    var sections = [];
+    links.forEach(function (link) {
+      var id = (link.getAttribute('href') || '').slice(1);
+      var section = id && document.getElementById(id);
+      if (section) { map[id] = link; sections.push(section); }
+    });
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        links.forEach(function (l) { l.classList.remove('is-current'); });
+        var current = map[entry.target.id];
+        if (!current) return;
+        current.classList.add('is-current');
+        // Keep the active chip in view when the bar has to scroll horizontally.
+        var barBox = bar.getBoundingClientRect();
+        var chipBox = current.getBoundingClientRect();
+        if (chipBox.left < barBox.left + 24 || chipBox.right > barBox.right - 24) {
+          current.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+
+    sections.forEach(function (sec) { io.observe(sec); });
+  })();
+
   /* ---------- Mobile menu ---------- */
   (function menuModule() {
     var btn = document.getElementById('menuBtn');
