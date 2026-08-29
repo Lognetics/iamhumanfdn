@@ -3081,3 +3081,141 @@ body.is-locked .site-header {
   .tiers { grid-template-columns: 1fr; }
   .tier--top { grid-column: span 1; }
 }
+
+/* =====================================================================
+   10. PAYMENTS (Stripe Checkout)
+   Shared by the donate page, the Second Chance tiers, and the ticket box.
+   ===================================================================== */
+
+.paybox {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: center;
+  padding: clamp(1.8rem, 3.4vw, 3rem);
+  border-radius: var(--r-xl);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+}
+[data-theme="dark"] .paybox { background: rgba(255, 255, 255, .04); }
+.paybox__title { margin-top: .9rem; font-size: var(--step-3); font-weight: 400; letter-spacing: -0.03em; }
+.paybox__title em {
+  font-style: italic;
+  background: var(--grad-brand-text);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.paybox__text { margin-top: 1rem; color: var(--text-2); line-height: 1.75; max-width: 44ch; }
+.paybox__trust {
+  display: flex; align-items: flex-start; gap: .55rem;
+  margin-top: 1.4rem;
+  font-size: .697rem; line-height: 1.55; color: var(--text-3);
+}
+.paybox__trust svg { width: 15px; height: 15px; color: var(--emerald); flex: none; margin-top: .12rem; }
+.paybox__form { display: grid; gap: 1rem; }
+.paybox__repeat { margin-top: -.2rem; }
+.paybox__note { font-size: .663rem; color: var(--text-3); text-align: center; }
+
+.amount-chips { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .5rem; }
+.amount-chip {
+  padding: .7rem .4rem;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  font-family: var(--font-serif);
+  font-size: .95rem; font-weight: 600; letter-spacing: -0.02em;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color .3s var(--ease), background-color .3s var(--ease), transform .3s var(--ease);
+}
+[data-theme="dark"] .amount-chip { background: rgba(255, 255, 255, .05); }
+.amount-chip:hover { border-color: var(--brand-line); transform: translateY(-2px); }
+.amount-chip.is-active { border-color: var(--brand); background: var(--brand-soft); color: var(--brand); }
+
+.amount-input { position: relative; }
+.amount-input__cur {
+  position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
+  font-size: .9rem; font-weight: 600; color: var(--text-3);
+  pointer-events: none;
+}
+.amount-input input { padding-left: 2.2rem; font-size: 1rem; font-weight: 600; }
+/* The number spinner competes with the currency prefix for space */
+.amount-input input::-webkit-outer-spin-button,
+.amount-input input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.amount-input input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+
+.field__opt { font-weight: 400; color: var(--text-3); }
+
+.pay-msg {
+  margin: 0;
+  padding: .7rem .9rem;
+  border-radius: var(--r-sm);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: .7rem; font-weight: 500; line-height: 1.5;
+}
+
+/* Button busy state while the Stripe session is being created */
+.btn.is-busy { opacity: .85; cursor: progress; }
+.pay-spin {
+  display: inline-block;
+  width: 14px; height: 14px; margin-right: .1rem;
+  border: 2px solid rgba(255, 255, 255, .45);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: paySpin .7s linear infinite;
+}
+@keyframes paySpin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .pay-spin { animation-duration: 2s; } }
+
+/* Ticket box on the Second Chance page */
+.ticketbox {
+  display: grid; gap: .9rem;
+  margin-top: 1.6rem; padding-top: 1.4rem;
+  border-top: 1px solid var(--border-2);
+}
+.ticketbox__row { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: .7rem; align-items: end; }
+/* A four-figure amount plus its currency prefix needs more room than a quantity */
+.ticketbox__row--amount { grid-template-columns: 9.5rem minmax(0, 1fr); }
+/* Scoped to the inverted card only: on a light card the fields keep the default
+   treatment, or the white-on-white text disappears entirely. */
+.benefit--dark .ticketbox { border-top-color: rgba(255, 255, 255, .14); }
+.benefit--dark .ticketbox .field label { color: rgba(255, 255, 255, .82); }
+.benefit--dark .ticketbox .field__opt { color: rgba(255, 255, 255, .55); }
+.benefit--dark .ticketbox .field input {
+  background: rgba(255, 255, 255, .1);
+  border-color: rgba(255, 255, 255, .2);
+  color: #fff;
+}
+.benefit--dark .ticketbox .field input::placeholder { color: rgba(255, 255, 255, .5); }
+.benefit--dark .ticketbox .amount-input__cur { color: rgba(255, 255, 255, .7); }
+.benefit--dark .ticketbox .field input:focus {
+  border-color: var(--teal-300);
+  box-shadow: 0 0 0 4px rgba(79, 194, 220, .18);
+}
+.benefit .pay-msg { background: rgba(224, 145, 122, .18); color: var(--terracotta-400); }
+
+/* Compact card-give panel inside a .give card on the home page */
+.give__chips { margin-top: 1.2rem; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .35rem; }
+.give__chips .amount-chip { padding: .5rem .2rem; font-size: .8rem; }
+.give__amount { margin-top: .6rem; margin-bottom: 1rem; }
+.give__amount input {
+  width: 100%;
+  padding: .7rem 1rem .7rem 2.1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  font-size: .95rem; font-weight: 600;
+}
+[data-theme="dark"] .give__amount input { background: rgba(255, 255, 255, .05); }
+.give__amount input:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 4px var(--brand-soft); }
+.give__note a { color: var(--brand); font-weight: 600; }
+.give .pay-msg { margin-bottom: .6rem; }
+
+@media (max-width: 860px) {
+  .paybox { grid-template-columns: 1fr; }
+}
+@media (max-width: 460px) {
+  .amount-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ticketbox__row { grid-template-columns: 1fr; }
+}

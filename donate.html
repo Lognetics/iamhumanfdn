@@ -289,7 +289,61 @@
 
   <section class="section" id="ways">
     <div class="shell">
-      <ul class="give-grid" style="margin-top:0">
+      <!-- Card payment. Amounts post to /api/checkout, which prices the item server
+           side and redirects to Stripe Checkout; no card details touch this site. -->
+      <div class="paybox reveal" data-reveal data-checkout-scope>
+        <div class="paybox__intro">
+          <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span> Give by card</p>
+          <h2 class="paybox__title">Donate <em>securely</em>, in a few seconds</h2>
+          <p class="paybox__text">
+            Card, Apple Pay and Google Pay, handled by Stripe. Choose an amount, or type
+            your own. Every gift goes towards advocacy, essential needs, and community
+            projects.
+          </p>
+          <p class="paybox__trust">
+            <svg aria-hidden="true"><use href="#i-check"/></svg>
+            Payments are processed by Stripe. This site never sees your card details.
+          </p>
+        </div>
+
+        <div class="paybox__form">
+          <div class="amount-chips" data-amounts>
+            <button class="amount-chip" type="button" data-amount="25" aria-pressed="false">&euro;25</button>
+            <button class="amount-chip" type="button" data-amount="50" aria-pressed="false">&euro;50</button>
+            <button class="amount-chip" type="button" data-amount="100" aria-pressed="false">&euro;100</button>
+            <button class="amount-chip" type="button" data-amount="250" aria-pressed="false">&euro;250</button>
+          </div>
+
+          <div class="field">
+            <label for="donateAmount">Amount</label>
+            <div class="amount-input">
+              <span class="amount-input__cur" aria-hidden="true">&euro;</span>
+              <input id="donateAmount" type="number" min="1" step="1" value="50"
+                     inputmode="decimal" autocomplete="off" data-checkout-amount>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="donateEmail">Email <span class="field__opt">(for your receipt)</span></label>
+            <input id="donateEmail" type="email" autocomplete="email" placeholder="you@example.com" data-checkout-email>
+          </div>
+
+          <label class="check paybox__repeat">
+            <input type="checkbox" data-checkout-recurring>
+            <span>Make this a monthly gift</span>
+          </label>
+
+          <button class="btn btn--gold btn--block btn--lg" type="button" data-checkout="donation">
+            Continue to payment
+            <svg class="btn__icon btn__icon--end" aria-hidden="true"><use href="#i-arrow"/></svg>
+          </button>
+
+          <p class="pay-msg" role="status" aria-live="polite" hidden></p>
+          <p class="paybox__note">You can also give by bank transfer or GoFundMe below.</p>
+        </div>
+      </div>
+
+      <ul class="give-grid">
         <li class="give reveal" data-reveal data-reveal-delay="1">
           <span class="give__icon"><svg aria-hidden="true"><use href="#i-bank"/></svg></span>
           <h2 class="give__title">Bank Transfer</h2>

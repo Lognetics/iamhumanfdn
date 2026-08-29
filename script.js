@@ -765,6 +765,118 @@
     });
   })();
 
+  /* ---------- Stripe Checkout ---------- */
+  (function checkoutModule() {
+    var triggers = document.querySelectorAll('[data-checkout]');
+    if (!triggers.length) return;
+
+    function fail(btn, text) {
+      var slot = btn.closest('[data-checkout-scope]') || btn.parentElement;
+      var msg = slot && slot.querySelector('.pay-msg');
+      if (msg) { msg.textContent = text; msg.hidden = false; }
+      else toast(text);
+    }
+
+    function busy(btn, on) {
+      btn.disabled = on;
+      btn.classList.toggle('is-busy', on);
+      if (on) {
+        btn.dataset.label = btn.dataset.label || btn.innerHTML;
+        btn.innerHTML = '<span class="pay-spin" aria-hidden="true"></span>Redirecting to Stripe…';
+      } else if (btn.dataset.label) {
+        btn.innerHTML = btn.dataset.label;
+      }
+    }
+
+    triggers.forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (btn.disabled) return;
+
+        var scope = btn.closest('[data-checkout-scope]');
+        var payload = { item: btn.getAttribute('data-checkout') };
+
+        // Only open-amount items carry an input; fixed prices come from the server.
+        var amountField = scope && scope.querySelector('[data-checkout-amount]');
+        if (amountField) {
+          var value = parseFloat(String(amountField.value).replace(/[^0-9.]/g, ''));
+          if (!Number.isFinite(value) || value <= 0) {
+            fail(btn, 'Please enter an amount first.');
+            amountField.focus();
+            return;
+          }
+          payload.amount = value;
+        }
+
+        var qtyField = scope && scope.querySelector('[data-checkout-quantity]');
+        if (qtyField) payload.quantity = parseInt(qtyField.value, 10) || 1;
+
+        var emailField = scope && scope.querySelector('[data-checkout-email]');
+        if (emailField && emailField.value.trim()) payload.email = emailField.value.trim();
+
+        var monthly = scope && scope.querySelector('[data-checkout-recurring]');
+        if (monthly && monthly.checked) payload.recurring = true;
+
+        payload.cancelPath = window.location.pathname + window.location.hash;
+
+        var msg = scope && scope.querySelector('.pay-msg');
+        if (msg) msg.hidden = true;
+        busy(btn, true);
+
+        fetch('/api/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        })
+          .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+          .then(function (res) {
+            if (res.ok && res.d && res.d.url) {
+              window.location.href = res.d.url;
+              return;
+            }
+            busy(btn, false);
+            fail(btn, (res.d && res.d.error) || 'The payment could not be started. Please try again, or use bank transfer.');
+          })
+          .catch(function () {
+            busy(btn, false);
+            fail(btn, 'We could not reach the payment service. Please try again, or use bank transfer.');
+          });
+      });
+    });
+  })();
+
+  /* ---------- Donation amount presets ---------- */
+  (function amountModule() {
+    var groups = document.querySelectorAll('[data-amounts]');
+    if (!groups.length) return;
+
+    groups.forEach(function (group) {
+      var scope = group.closest('[data-checkout-scope]');
+      var input = scope && scope.querySelector('[data-checkout-amount]');
+      if (!input) return;
+
+      var chips = group.querySelectorAll('.amount-chip');
+
+      function sync() {
+        var current = String(parseFloat(input.value) || '');
+        chips.forEach(function (c) {
+          c.classList.toggle('is-active', c.getAttribute('data-amount') === current);
+          c.setAttribute('aria-pressed', c.getAttribute('data-amount') === current ? 'true' : 'false');
+        });
+      }
+
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          input.value = chip.getAttribute('data-amount');
+          sync();
+        });
+      });
+
+      input.addEventListener('input', sync);
+      sync();
+    });
+  })();
+
   /* ---------- Smooth in-page scrolling (offset for the sticky header) ---------- */
   (function anchorModule() {
     document.addEventListener('click', function (e) {

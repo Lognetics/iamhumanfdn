@@ -20,10 +20,15 @@ launch-dinner.html    Our Launch: the November 2024 launch dinner, as a record
 donate.html           Donate: every way to give, where it goes, FAQ
 contact.html          Contact: form, volunteer + mailing list signup, details
 
+thank-you.html        Payment receipt page Stripe returns to (noindex)
+
 styles.css            design tokens, components, light/dark themes, responsive rules
 script.js             theme toggle, hero + event sliders, video facades, dropdowns,
-                      mobile menu, reveals, copy-IBAN, form delivery
+                      mobile menu, reveals, copy-IBAN, form delivery, Stripe checkout
 api/contact.js        serverless mail handler for both forms (see "Email" below)
+api/checkout.js       serverless Stripe Checkout handler (see "Payments" below)
+package.json          declares type:module so the two api functions load as ESM
+.env.example          the environment variable names, with no values
 assets/               logo-emblem.png, founder-shalimar.jpg, photos/p01–p77.jpg
 pictures/             original source images (not referenced directly by the site)
 ```
@@ -179,6 +184,65 @@ Two things worth knowing before editing it:
 
 Six icons were added to the sprite for this page and back-ported to every other page:
 `i-crown`, `i-gem`, `i-star`, `i-tools`, `i-briefcase`, `i-link`.
+
+## Payments
+
+Card payments run through **Stripe Checkout**. The browser never handles card data and
+neither does this site: `api/checkout.js` creates a Checkout Session server side and returns
+its URL, and the browser redirects to Stripe's own page. That keeps the site out of PCI
+scope entirely.
+
+### Setup
+
+One environment variable is required, set in **Vercel -> the project -> Settings ->
+Environment Variables**, never in this repo:
+
+| Variable | Required | Purpose |
+|---|---|---|
+| `STRIPE_SECRET_KEY` | yes | `sk_live_…` in production, `sk_test_…` while testing |
+| `SITE_URL` | no | Canonical origin for Stripe's return URLs. Defaults to the request origin |
+| `STRIPE_CURRENCY_GHS` | no | Currency for Second Chance items. Default `ghs` |
+| `STRIPE_CURRENCY` | no | Currency for general donations. Default `eur` |
+
+**No publishable key is needed.** The redirect flow never calls Stripe from the browser, so
+there is no `pk_…` anywhere in the source. One less key to rotate.
+
+Until `STRIPE_SECRET_KEY` is set the endpoint answers **501** and the buttons show a message
+pointing at bank transfer, so giving never silently breaks.
+
+### What is wired up
+
+| Where | Item id | Price |
+|---|---|---|
+| `donate.html` panel, `home.html` giving card | `donation` | Open, EUR 1 to 50,000. Optional monthly |
+| Second Chance tiers | `tier-founding` … `tier-champion` | GHS 50,000 / 30,000 / 15,000 / 10,000 / 5,000 |
+| Second Chance tickets | `ticket` | GHS 900 each, 1 to 10 |
+| Friend of Second Chance | `friend` | Open, GHS 1,000 to 4,999 |
+
+### The rule that matters
+
+**Fixed prices live in `CATALOGUE` in `api/checkout.js`, on the server. The browser sends an
+item id and never a price.** Anyone can edit the page in devtools; if the client could name
+the amount, a GHS 50,000 partnership could be bought for GHS 1. Open amounts are range
+checked server side against `OPEN` for the same reason. If you add an item, add it to the
+catalogue, never to the markup alone.
+
+Two smaller guards worth keeping: `cancel_url` is validated against a path pattern rather
+than sanitised character by character, and item lookup uses `hasOwnProperty` so an id like
+`constructor` cannot reach through to `Object.prototype`.
+
+### Currency
+
+The prospectus quotes Ghana Cedis, so the Second Chance items default to `ghs`. **Confirm
+GHS is enabled as a presentment currency on the Stripe account before going live.** If it is
+not, the endpoint returns a clear message and you can switch by setting
+`STRIPE_CURRENCY_GHS` to a supported currency. Note that the displayed symbols in the markup
+are static, so change those to match if you switch.
+
+### Testing before going live
+
+Use a `sk_test_…` key and card `4242 4242 4242 4242`, any future expiry, any CVC. Stripe's
+dashboard has a test-mode toggle; payments made with a test key never appear in live mode.
 
 ## Images
 

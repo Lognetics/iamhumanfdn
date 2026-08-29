@@ -685,16 +685,28 @@
           </dl>
         </li>
 
-        <li class="give give--featured reveal" data-reveal data-reveal-delay="2">
-          <span class="give__flag">Most popular</span>
+        <li class="give give--featured reveal" data-reveal data-reveal-delay="2" data-checkout-scope>
+          <span class="give__flag">Fastest</span>
           <span class="give__icon"><svg aria-hidden="true"><use href="#i-heart"/></svg></span>
-          <h3 class="give__title">GoFundMe</h3>
-          <p class="give__text">Give securely by card in a few seconds, and share the campaign with people who care.</p>
-          <a class="btn btn--gold btn--block" href="https://gofund.me/ff43f723" target="_blank" rel="noopener noreferrer">
-            Donate via GoFundMe
+          <h3 class="give__title">Give by Card</h3>
+          <p class="give__text">Card, Apple Pay or Google Pay, handled securely by Stripe. Pick an amount and you are done in seconds.</p>
+          <div class="amount-chips give__chips" data-amounts>
+            <button class="amount-chip" type="button" data-amount="25" aria-pressed="false">&euro;25</button>
+            <button class="amount-chip" type="button" data-amount="50" aria-pressed="false">&euro;50</button>
+            <button class="amount-chip" type="button" data-amount="100" aria-pressed="false">&euro;100</button>
+            <button class="amount-chip" type="button" data-amount="250" aria-pressed="false">&euro;250</button>
+          </div>
+          <div class="amount-input give__amount">
+            <span class="amount-input__cur" aria-hidden="true">&euro;</span>
+            <label class="sr-only" for="homeAmount">Donation amount in euros</label>
+            <input id="homeAmount" type="number" min="1" step="1" value="50" inputmode="decimal" data-checkout-amount>
+          </div>
+          <button class="btn btn--gold btn--block" type="button" data-checkout="donation">
+            Donate now
             <svg class="btn__icon btn__icon--end" aria-hidden="true"><use href="#i-arrow"/></svg>
-          </a>
-          <p class="give__note">gofund.me/ff43f723</p>
+          </button>
+          <p class="pay-msg" role="status" aria-live="polite" hidden></p>
+          <p class="give__note"><a href="donate.html#ways">More ways to give</a></p>
         </li>
 
         <li class="give reveal" data-reveal data-reveal-delay="3">

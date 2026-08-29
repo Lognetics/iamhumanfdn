@@ -1,0 +1,10 @@
+{
+  "name": "iamhumanfdn",
+  "private": true,
+  "version": "1.0.0",
+  "description": "I Am Human Foundation website. Static pages plus two Vercel serverless functions.",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  }
+}

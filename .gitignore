@@ -13,3 +13,8 @@ desktop.ini
 node_modules/
 .vercel/
 *.log
+
+# Secrets. Never commit real keys; see .env.example for the variable names.
+.env
+.env.*
+!.env.example

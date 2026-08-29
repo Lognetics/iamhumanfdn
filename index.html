@@ -489,41 +489,41 @@
       </header>
 
       <ul class="tiers">
-        <li class="tier tier--top reveal" data-reveal data-reveal-delay="1">
+        <li class="tier tier--top reveal" data-reveal data-reveal-delay="1" data-checkout-scope>
           <span class="tier__flag">Top tier</span>
           <span class="tier__icon"><svg aria-hidden="true"><use href="#i-crown"/></svg></span>
           <h3 class="tier__name">Founding<br>Partner</h3>
           <p class="tier__price"><span class="tier__cur">GHS</span><b>50,000</b></p>
           <p class="tier__invites">5 VIP invitations</p>
-          <a class="btn btn--gold btn--block btn--sm tier__cta" href="#partner">Enquire</a>
+          <button class="btn btn--gold btn--block btn--sm tier__cta" type="button" data-checkout="tier-founding">Become a partner</button>
         </li>
-        <li class="tier reveal" data-reveal data-reveal-delay="2">
+        <li class="tier reveal" data-reveal data-reveal-delay="2" data-checkout-scope>
           <span class="tier__icon"><svg aria-hidden="true"><use href="#i-gem"/></svg></span>
           <h3 class="tier__name">Impact<br>Partner</h3>
           <p class="tier__price"><span class="tier__cur">GHS</span><b>30,000</b></p>
           <p class="tier__invites">3 VIP invitations</p>
-          <a class="btn btn--outline btn--block btn--sm tier__cta" href="#partner">Enquire</a>
+          <button class="btn btn--outline btn--block btn--sm tier__cta" type="button" data-checkout="tier-impact">Become a partner</button>
         </li>
-        <li class="tier reveal" data-reveal data-reveal-delay="3">
+        <li class="tier reveal" data-reveal data-reveal-delay="3" data-checkout-scope>
           <span class="tier__icon"><svg aria-hidden="true"><use href="#i-star"/></svg></span>
           <h3 class="tier__name">Programme<br>Partner</h3>
           <p class="tier__price"><span class="tier__cur">GHS</span><b>15,000</b></p>
           <p class="tier__invites">2 invitations</p>
-          <a class="btn btn--outline btn--block btn--sm tier__cta" href="#partner">Enquire</a>
+          <button class="btn btn--outline btn--block btn--sm tier__cta" type="button" data-checkout="tier-programme">Become a partner</button>
         </li>
-        <li class="tier reveal" data-reveal data-reveal-delay="4">
+        <li class="tier reveal" data-reveal data-reveal-delay="4" data-checkout-scope>
           <span class="tier__icon"><svg aria-hidden="true"><use href="#i-hands"/></svg></span>
           <h3 class="tier__name">Supporting<br>Partner</h3>
           <p class="tier__price"><span class="tier__cur">GHS</span><b>10,000</b></p>
           <p class="tier__invites">2 invitations</p>
-          <a class="btn btn--outline btn--block btn--sm tier__cta" href="#partner">Enquire</a>
+          <button class="btn btn--outline btn--block btn--sm tier__cta" type="button" data-checkout="tier-supporting">Become a partner</button>
         </li>
-        <li class="tier reveal" data-reveal data-reveal-delay="5">
+        <li class="tier reveal" data-reveal data-reveal-delay="5" data-checkout-scope>
           <span class="tier__icon"><svg aria-hidden="true"><use href="#i-heart"/></svg></span>
           <h3 class="tier__name">Second Chance<br>Champion</h3>
           <p class="tier__price"><span class="tier__cur">GHS</span><b>5,000</b></p>
           <p class="tier__invites">1 invitation</p>
-          <a class="btn btn--outline btn--block btn--sm tier__cta" href="#partner">Enquire</a>
+          <button class="btn btn--outline btn--block btn--sm tier__cta" type="button" data-checkout="tier-champion">Become a partner</button>
         </li>
       </ul>
     </div>
@@ -648,7 +648,7 @@
       </header>
 
       <div class="benefit-pair">
-        <article class="benefit benefit--dark reveal" data-reveal data-reveal-delay="1">
+        <article class="benefit benefit--dark reveal" data-reveal data-reveal-delay="1" data-checkout-scope>
           <header class="benefit__head">
             <span class="benefit__icon"><svg aria-hidden="true"><use href="#i-ticket"/></svg></span>
             <div>
@@ -662,13 +662,30 @@
             <li>Foundation presentation and beneficiary story</li>
             <li>Open to friends, family, and the wider public &mdash; no partnership required</li>
           </ul>
+          <div class="ticketbox">
+            <div class="ticketbox__row">
+              <div class="field">
+                <label for="ticketQty">Tickets</label>
+                <input id="ticketQty" type="number" min="1" max="10" step="1" value="1" inputmode="numeric" data-checkout-quantity>
+              </div>
+              <div class="field">
+                <label for="ticketEmail">Email <span class="field__opt">(for your ticket)</span></label>
+                <input id="ticketEmail" type="email" autocomplete="email" placeholder="you@example.com" data-checkout-email>
+              </div>
+            </div>
+            <button class="btn btn--gold btn--block" type="button" data-checkout="ticket">
+              Buy tickets
+              <svg class="btn__icon btn__icon--end" aria-hidden="true"><use href="#i-arrow"/></svg>
+            </button>
+            <p class="pay-msg" role="status" aria-live="polite" hidden></p>
+          </div>
           <p class="benefit__note">
             Ticket sales cover the reception&rsquo;s drinks and catering, so partnership gifts go
             further toward the Initiative itself.
           </p>
         </article>
 
-        <article class="benefit reveal" data-reveal data-reveal-delay="2">
+        <article class="benefit reveal" data-reveal data-reveal-delay="2" data-checkout-scope>
           <header class="benefit__head">
             <span class="benefit__icon"><svg aria-hidden="true"><use href="#i-heart"/></svg></span>
             <div>
@@ -682,6 +699,26 @@
             <li>Thank-you mention on social media</li>
             <li>A meaningful step toward next year&rsquo;s partnership</li>
           </ul>
+          <div class="ticketbox">
+            <div class="ticketbox__row ticketbox__row--amount">
+              <div class="field">
+                <label for="friendAmount">Amount</label>
+                <div class="amount-input">
+                  <span class="amount-input__cur" aria-hidden="true">&#8373;</span>
+                  <input id="friendAmount" type="number" min="1000" max="4999" step="100" value="1000" inputmode="decimal" data-checkout-amount>
+                </div>
+              </div>
+              <div class="field">
+                <label for="friendEmail">Email <span class="field__opt">(for your receipt)</span></label>
+                <input id="friendEmail" type="email" autocomplete="email" placeholder="you@example.com" data-checkout-email>
+              </div>
+            </div>
+            <button class="btn btn--outline btn--block" type="button" data-checkout="friend">
+              Give as a Friend
+              <svg class="btn__icon btn__icon--end" aria-hidden="true"><use href="#i-arrow"/></svg>
+            </button>
+            <p class="pay-msg" role="status" aria-live="polite" hidden></p>
+          </div>
           <p class="benefit__note">
             Gifts under GHS 1,000 are just as welcome &mdash; recognized the same way, with
             reception seats available via ticket.
