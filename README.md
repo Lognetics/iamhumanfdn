@@ -15,7 +15,7 @@ mission.html          Our Mission: the five pillars in depth (anchored sections)
 founder.html          Founder Story: Shalimar Abbiusi, with the video of her account
 impact.html           Impact & Regions: Africa, Europe, Global Advocacy (anchored)
 projects.html         Projects: delivered, ongoing, and in development
-press.html            Press & Media: coverage, interviews, project video
+press.html            Press & Media: 12 real articles, project videos, media kit
 launch-dinner.html    Our Launch: the November 2024 launch dinner, as a record
 donate.html           Donate: every way to give, where it goes, FAQ
 contact.html          Contact: form, volunteer + mailing list signup, details
@@ -216,9 +216,9 @@ pointing at bank transfer, so giving never silently breaks.
 | Where | Item id | Price |
 |---|---|---|
 | `donate.html` panel, `home.html` giving card | `donation` | Open, EUR 1 to 50,000. Optional monthly |
-| Second Chance tiers | `tier-founding` … `tier-champion` | USD 4,396 / 2,638 / 1,319 / 879 / 440 |
-| Second Chance tickets | `ticket` | USD 79 each, 1 to 10 |
-| Friend of Second Chance | `friend` | Open, USD 88 to 439 |
+| Second Chance tiers | `tier-founding` … `tier-champion` | USD 4,500 / 2,500 / 1,500 / 850 / 450 |
+| Second Chance tickets | `ticket` | USD 80 each, 1 to 10 |
+| Friend of Second Chance | `friend` | Open, USD 90 to 449 |
 
 ### The rule that matters
 
@@ -243,18 +243,20 @@ conversion came from:
 
 | Tier | Prospectus | Charged |
 |---|---|---|
-| Founding Partner | GHS 50,000 | USD 4,396 |
-| Impact Partner | GHS 30,000 | USD 2,638 |
-| Programme Partner | GHS 15,000 | USD 1,319 |
-| Supporting Partner | GHS 10,000 | USD 879 |
-| Second Chance Champion | GHS 5,000 | USD 440 |
-| Individual ticket | GHS 900 | USD 79 |
-| Friend of Second Chance | GHS 1,000 to 4,999 | USD 88 to 439 |
+| Founding Partner | GHS 50,000 | USD 4,500 |
+| Impact Partner | GHS 30,000 | USD 2,500 |
+| Programme Partner | GHS 15,000 | USD 1,500 |
+| Supporting Partner | GHS 10,000 | USD 850 |
+| Second Chance Champion | GHS 5,000 | USD 450 |
+| Individual ticket | GHS 900 | USD 80 |
+| Friend of Second Chance | GHS 1,000 to 4,999 | USD 90 to 449 |
 
 Converted at **11.3730 GHS per USD**, the mid of two independent rates on **2026-09-07**,
-rounded to the whole dollar. The cedi moves, so re-check before a major campaign and before
-reprinting the prospectus. Friend tops out at USD 439 rather than 440 so it stays strictly
-below the Champion tier, as GHS 4,999 did below GHS 5,000.
+then set to clean sponsorship figures. Founding, Programme and Champion sit above the
+converted amount; Impact and Supporting sit slightly below it, by USD 138 and USD 29. Those
+are deliberate prices, not conversion drift. The cedi moves, so re-check before a major
+campaign and before reprinting the prospectus. Friend tops out at USD 449 so it stays
+strictly below the Champion tier, as GHS 4,999 did below GHS 5,000.
 
 Prices are stored per currency, and that is deliberate. An early version let an env var swap
 the currency while leaving the amount alone, so switching to EUR would have charged a
@@ -281,6 +283,44 @@ see USD either way.
 
 Use a `sk_test_…` key and card `4242 4242 4242 4242`, any future expiry, any CVC. Stripe's
 dashboard has a test-mode toggle; payments made with a test key never appear in live mode.
+
+## Press coverage
+
+`press.html` lists **12 real articles**, newest first, each linked to its original
+publication. Every URL was checked before being added. Do not add an item without opening
+it first: fabricated or dead press citations damage the foundation's credibility far more
+than a short list does.
+
+Verified end to end (headline, publication and date read from the article itself):
+
+| Publication | Date | Story |
+|---|---|---|
+| Graphic Online | 9 Dec 2025 | Farmers' Day outreach in Nima |
+| MyJoyOnline | 13 Aug 2025 | Over $9K to empower 150 women in Edo State |
+| Ghana News Agency | 26 Nov 2024 | ECOWAS Court rules Ghana violated her rights |
+| DailyGuide Network | 11 Nov 2024 | Foundation launch announced |
+
+The rest resolve but sit behind bot protection, so their headlines come from search results
+and are corroborated by at least one other outlet covering the same event: GhanaWeb (three
+pieces), The Guardian Nigeria, ModernGhana, 3News, YEN.com.gh and Citi Newsroom.
+
+To re-check every link at once:
+
+```bash
+python3 - <<'EOF' | while read -r u; do
+  printf '%-4s %s\n' "$(curl -sL -o /dev/null -w '%{http_code}' -A 'Mozilla/5.0' "$u")" "$u"
+done
+import re
+print('\n'.join(re.findall(r'class="press-item" href="(https://[^"]+)"', open('press.html').read())))
+EOF
+```
+
+A 403 or 406 means bot protection, not a dead link; those pages open normally in a browser.
+A 404 must be removed. One candidate (ghanamma.com) was dropped for exactly that reason.
+
+**Instagram cannot be scraped.** The profile is fetchable for bio and highlight names, but
+captions and the links inside story highlights are not readable without logging in. New
+coverage has to be added here by hand, or supplied as a list.
 
 ## Images
 

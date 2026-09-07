@@ -44,7 +44,10 @@ const STRIPE_VERSION = '2024-06-20';
  * USD. The ghs figures are kept beside each usd price as the source of the conversion.
  *
  * Converted at 11.3730 GHS per USD, the mid of two independent rates on 2026-09-07,
- * then rounded to the whole dollar. Re-check before a large campaign: the cedi moves.
+ * then set to clean sponsorship figures chosen by the foundation. Founding, Programme
+ * and Champion sit above the converted amount; Impact and Supporting sit slightly below
+ * it (by USD 138 and USD 29). These are deliberate prices, not conversion drift.
+ * Re-check before a large campaign: the cedi moves.
  */
 const SC_CUR = (process.env.SECOND_CHANCE_CURRENCY || 'usd').toLowerCase();
 const GEN_CUR = (process.env.STRIPE_CURRENCY || 'eur').toLowerCase();
@@ -68,32 +71,32 @@ function priceOverrides() {
 /** Fixed-price items. `prices` maps currency -> amount in minor units. */
 const CATALOGUE = {
   'tier-founding': {
-    prices: { usd: 439600, ghs: 5000000 },
+    prices: { usd: 450000, ghs: 5000000 },
     name: 'Founding Partner \u2014 The Second Chance Initiative',
     description: '5 VIP invitations to the launch reception, Accra, 28 November 2026.',
   },
   'tier-impact': {
-    prices: { usd: 263800, ghs: 3000000 },
+    prices: { usd: 250000, ghs: 3000000 },
     name: 'Impact Partner \u2014 The Second Chance Initiative',
     description: '3 VIP invitations to the launch reception, Accra, 28 November 2026.',
   },
   'tier-programme': {
-    prices: { usd: 131900, ghs: 1500000 },
+    prices: { usd: 150000, ghs: 1500000 },
     name: 'Programme Partner \u2014 The Second Chance Initiative',
     description: '2 invitations to the launch reception, Accra, 28 November 2026.',
   },
   'tier-supporting': {
-    prices: { usd: 87900, ghs: 1000000 },
+    prices: { usd: 85000, ghs: 1000000 },
     name: 'Supporting Partner \u2014 The Second Chance Initiative',
     description: '2 invitations to the launch reception, Accra, 28 November 2026.',
   },
   'tier-champion': {
-    prices: { usd: 44000, ghs: 500000 },
+    prices: { usd: 45000, ghs: 500000 },
     name: 'Second Chance Champion',
     description: '1 invitation to the launch reception, Accra, 28 November 2026.',
   },
   'ticket': {
-    prices: { usd: 7900, ghs: 90000 },
+    prices: { usd: 8000, ghs: 90000 },
     name: 'Second Chance Launch Reception \u2014 individual ticket',
     description: 'Entry, drinks and light bites. Accra, 28 November 2026.',
     quantityMax: 10,
@@ -114,8 +117,8 @@ const OPEN = {
   },
   friend: {
     group: 'second-chance',
-    // $439 max keeps a Friend gift strictly below the $440 Champion tier.
-    bounds: { usd: [8800, 43900], ghs: [100000, 499900] },
+    // $449 max keeps a Friend gift strictly below the $450 Champion tier.
+    bounds: { usd: [9000, 44900], ghs: [100000, 499900] },
     name: 'Friend of Second Chance',
     description: 'Includes one complimentary reception seat.',
     donate: true,
