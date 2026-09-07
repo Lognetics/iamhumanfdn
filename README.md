@@ -201,8 +201,9 @@ Environment Variables**, never in this repo:
 |---|---|---|
 | `STRIPE_SECRET_KEY` | yes | `sk_live_…` in production, `sk_test_…` while testing |
 | `SITE_URL` | no | Canonical origin for Stripe's return URLs. Defaults to the request origin |
-| `STRIPE_CURRENCY_GHS` | no | Currency for Second Chance items. Default `ghs` |
+| `SECOND_CHANCE_CURRENCY` | no | Currency for prospectus items. Default `ghs` |
 | `STRIPE_CURRENCY` | no | Currency for general donations. Default `eur` |
+| `STRIPE_PRICES` | see below | JSON price table in minor units. Required if you change a currency |
 
 **No publishable key is needed.** The redirect flow never calls Stripe from the browser, so
 there is no `pk_…` anywhere in the source. One less key to rotate.
@@ -231,13 +232,31 @@ Two smaller guards worth keeping: `cancel_url` is validated against a path patte
 than sanitised character by character, and item lookup uses `hasOwnProperty` so an id like
 `constructor` cannot reach through to `Object.prototype`.
 
-### Currency
+### Currency: read this before going live
 
-The prospectus quotes Ghana Cedis, so the Second Chance items default to `ghs`. **Confirm
-GHS is enabled as a presentment currency on the Stripe account before going live.** If it is
-not, the endpoint returns a clear message and you can switch by setting
-`STRIPE_CURRENCY_GHS` to a supported currency. Note that the displayed symbols in the markup
-are static, so change those to match if you switch.
+**Stripe does not support Ghana as an account country**, and GHS is not a presentment
+currency for most accounts (it is absent from Stripe's own minimum-charge table). Ghana is
+served through Paystack's extended network instead. Belgium, which matches the foundation's
+`BE74…` IBAN, is fully supported.
+
+So a Belgium-based Stripe account will very likely **not** be able to charge the Second
+Chance items in GHS. Confirm this in the Dashboard before launch. There are three routes:
+
+1. **Price the prospectus items in EUR.** Set `SECOND_CHANCE_CURRENCY=eur` **and**
+   `STRIPE_PRICES` with the converted figures, then update the `&#8373;` symbols and the
+   quoted GHS figures in `index.html` so the page matches what is charged.
+2. **Take a separate Paystack account for Ghana** and point the prospectus items there,
+   leaving Stripe for general euro donations.
+3. **Leave the prospectus items offline**, handled by invoice through the partnerships
+   team, exactly as the printed prospectus says. General donations still work on Stripe.
+
+**Prices are stored per currency, and that is deliberate.** An earlier version of this
+handler let an env var swap the currency while leaving the amount alone, so
+`SECOND_CHANCE_CURRENCY=eur` would have charged a founding partner **EUR 50,000 instead of
+GHS 50,000**, roughly sixteen times over. Now each item carries a `prices` map keyed by
+currency, and an item with no price in the configured currency is **refused with a 501**
+rather than sold at a figure meant for another currency. Never reintroduce a bare currency
+swap.
 
 ### Testing before going live
 

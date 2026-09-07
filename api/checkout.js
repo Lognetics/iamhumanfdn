@@ -10,10 +10,11 @@
  *   STRIPE_SECRET_KEY    required. Your sk_live_… (or sk_test_… while testing).
  *   SITE_URL             optional. Canonical origin for the return URLs.
  *                        Defaults to the request's own origin.
- *   STRIPE_CURRENCY_GHS  optional. Overrides the currency for the Second Chance
- *                        items if your Stripe account cannot present GHS.
- *                        e.g. set to "eur" or "usd".
- *   STRIPE_CURRENCY      optional. Overrides the currency for general donations.
+  *   SECOND_CHANCE_CURRENCY  optional. Currency for the prospectus items. Default ghs.
+ *   STRIPE_CURRENCY         optional. Currency for general donations. Default eur.
+ *   STRIPE_PRICES           optional. JSON price table, in the currency's minor unit,
+ *                           e.g. {"tier-founding":{"eur":300000}}. Required when the
+ *                           currency is changed, since prices are per currency.
  *
  * Until STRIPE_SECRET_KEY is set the endpoint answers 501 and the site keeps showing
  * its existing bank-transfer and GoFundMe routes, so giving never breaks.
@@ -26,62 +27,100 @@
 const STRIPE_API = 'https://api.stripe.com/v1/checkout/sessions';
 const STRIPE_VERSION = '2024-06-20';
 
-// Second Chance prices are quoted in Ghana Cedis in the prospectus; general giving
-// follows the foundation's euro account. Either can be overridden by env if the
-// Stripe account does not support that presentment currency.
-const GHS = (process.env.STRIPE_CURRENCY_GHS || 'ghs').toLowerCase();
-const GEN = (process.env.STRIPE_CURRENCY || 'eur').toLowerCase();
+/**
+ * Which currency each group of items is charged in.
+ *
+ *   SECOND_CHANCE_CURRENCY  the prospectus items. Default 'ghs'.
+ *   STRIPE_CURRENCY         general donations.    Default 'eur'.
+ *
+ * Prices below are keyed BY CURRENCY on purpose. A currency can never be changed
+ * without supplying the matching amount, because switching 'ghs' to 'eur' while
+ * keeping unit_amount 5000000 would charge EUR 50,000 instead of GHS 50,000.
+ * If the configured currency has no price, the item is refused rather than
+ * charged at the wrong figure.
+ *
+ * NOTE: Stripe does not support Ghana as an account country and GHS is not a
+ * presentment currency for most accounts. A Belgium-based account will need the
+ * eur prices filled in below (or via STRIPE_PRICES) before these items can sell.
+ */
+const SC_CUR = (process.env.SECOND_CHANCE_CURRENCY || 'ghs').toLowerCase();
+const GEN_CUR = (process.env.STRIPE_CURRENCY || 'eur').toLowerCase();
 
-/** Fixed-price items. `amount` is in minor units (pesewas / cents). */
+/**
+ * Optional JSON override, e.g.
+ *   STRIPE_PRICES={"tier-founding":{"eur":300000},"ticket":{"eur":5500}}
+ * Amounts are in the currency's minor unit. Merged over the table below.
+ */
+function priceOverrides() {
+  if (!process.env.STRIPE_PRICES) return {};
+  try {
+    const parsed = JSON.parse(process.env.STRIPE_PRICES);
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch (e) {
+    console.error('STRIPE_PRICES is not valid JSON; ignoring it.');
+    return {};
+  }
+}
+
+/** Fixed-price items. `prices` maps currency -> amount in minor units. */
 const CATALOGUE = {
   'tier-founding': {
-    amount: 5000000, currency: GHS,
-    name: 'Founding Partner — The Second Chance Initiative',
-    description: 'GHS 50,000 · 5 VIP invitations to the launch reception, Accra, 28 November 2026.',
+    prices: { ghs: 5000000 },
+    name: 'Founding Partner \u2014 The Second Chance Initiative',
+    description: '5 VIP invitations to the launch reception, Accra, 28 November 2026.',
   },
   'tier-impact': {
-    amount: 3000000, currency: GHS,
-    name: 'Impact Partner — The Second Chance Initiative',
-    description: 'GHS 30,000 · 3 VIP invitations to the launch reception, Accra, 28 November 2026.',
+    prices: { ghs: 3000000 },
+    name: 'Impact Partner \u2014 The Second Chance Initiative',
+    description: '3 VIP invitations to the launch reception, Accra, 28 November 2026.',
   },
   'tier-programme': {
-    amount: 1500000, currency: GHS,
-    name: 'Programme Partner — The Second Chance Initiative',
-    description: 'GHS 15,000 · 2 invitations to the launch reception, Accra, 28 November 2026.',
+    prices: { ghs: 1500000 },
+    name: 'Programme Partner \u2014 The Second Chance Initiative',
+    description: '2 invitations to the launch reception, Accra, 28 November 2026.',
   },
   'tier-supporting': {
-    amount: 1000000, currency: GHS,
-    name: 'Supporting Partner — The Second Chance Initiative',
-    description: 'GHS 10,000 · 2 invitations to the launch reception, Accra, 28 November 2026.',
+    prices: { ghs: 1000000 },
+    name: 'Supporting Partner \u2014 The Second Chance Initiative',
+    description: '2 invitations to the launch reception, Accra, 28 November 2026.',
   },
   'tier-champion': {
-    amount: 500000, currency: GHS,
+    prices: { ghs: 500000 },
     name: 'Second Chance Champion',
-    description: 'GHS 5,000 · 1 invitation to the launch reception, Accra, 28 November 2026.',
+    description: '1 invitation to the launch reception, Accra, 28 November 2026.',
   },
   'ticket': {
-    amount: 90000, currency: GHS,
-    name: 'Second Chance Launch Reception — individual ticket',
-    description: 'GHS 900 per person. Entry, drinks and light bites, Accra, 28 November 2026.',
+    prices: { ghs: 90000 },
+    name: 'Second Chance Launch Reception \u2014 individual ticket',
+    description: 'Entry, drinks and light bites. Accra, 28 November 2026.',
     quantityMax: 10,
   },
 };
 
-/** Open-amount items, range-checked server side. Bounds are in minor units. */
+/** Open-amount items. `bounds` maps currency -> [min, max] in minor units. */
 const OPEN = {
   donation: {
-    currency: GEN, min: 100, max: 5000000,
+    group: 'general',
+    bounds: { eur: [100, 5000000], usd: [100, 5000000], gbp: [100, 5000000] },
     name: 'Donation to I Am Human Foundation',
     description: 'Supporting advocacy, essential needs, and community projects.',
     donate: true,
   },
   friend: {
-    currency: GHS, min: 100000, max: 499900,
+    group: 'second-chance',
+    bounds: { ghs: [100000, 499900] },
     name: 'Friend of Second Chance',
-    description: 'GHS 1,000–4,999 · includes one complimentary reception seat.',
+    description: 'Includes one complimentary reception seat.',
     donate: true,
   },
 };
+
+/** Which currency an item is charged in. */
+function currencyFor(item) {
+  const open = Object.prototype.hasOwnProperty.call(OPEN, item) ? OPEN[item] : null;
+  if (open) return open.group === 'general' ? GEN_CUR : SC_CUR;
+  return SC_CUR;
+}
 
 /** Stripe's API is form-encoded, including for nested structures. */
 function encode(obj, prefix, out) {
@@ -148,21 +187,39 @@ export default async function handler(req, res) {
   let amount;
   let quantity = 1;
   const spec = fixed || open;
+  const currency = currencyFor(item);
+  const overrides = priceOverrides();
 
   if (fixed) {
-    // The price comes from the server. Anything the client sent is ignored.
-    amount = fixed.amount;
+    // The price comes from the server, keyed by currency. Anything the client sent
+    // is ignored. No price for the configured currency means no sale, rather than a
+    // sale at a figure meant for a different currency.
+    const table = { ...fixed.prices, ...(overrides[item] || {}) };
+    amount = table[currency];
+    if (!Number.isFinite(amount)) {
+      console.error(`No ${currency} price for "${item}". Set STRIPE_PRICES or SECOND_CHANCE_CURRENCY.`);
+      return res.status(501).json({
+        error: 'This option is not available for online payment yet. Please contact us and we will arrange it.',
+      });
+    }
     if (fixed.quantityMax) {
       const q = Math.floor(Number(body.quantity));
       quantity = Number.isFinite(q) && q >= 1 ? Math.min(q, fixed.quantityMax) : 1;
     }
   } else {
+    const bounds = (overrides[item] && overrides[item].bounds) || open.bounds[currency];
+    if (!Array.isArray(bounds)) {
+      console.error(`No ${currency} bounds for "${item}".`);
+      return res.status(501).json({
+        error: 'This option is not available for online payment yet. Please contact us and we will arrange it.',
+      });
+    }
     // Open amount: accept it, but only inside the published range.
     const minor = Math.round(Number(body.amount) * 100);
-    if (!Number.isFinite(minor) || minor < open.min || minor > open.max) {
+    if (!Number.isFinite(minor) || minor < bounds[0] || minor > bounds[1]) {
       const fmt = (v) => (v / 100).toLocaleString('en-US');
       return res.status(400).json({
-        error: `Please enter an amount between ${fmt(open.min)} and ${fmt(open.max)}.`,
+        error: `Please enter an amount between ${fmt(bounds[0])} and ${fmt(bounds[1])}.`,
       });
     }
     amount = minor;
@@ -178,7 +235,7 @@ export default async function handler(req, res) {
     line_items: [{
       quantity,
       price_data: {
-        currency: spec.currency,
+        currency,
         unit_amount: amount,
         product_data: { name: spec.name, description: spec.description },
         ...(recurring ? { recurring: { interval: 'month' } } : {}),
