@@ -201,7 +201,7 @@ Environment Variables**, never in this repo:
 |---|---|---|
 | `STRIPE_SECRET_KEY` | yes | `sk_live_…` in production, `sk_test_…` while testing |
 | `SITE_URL` | no | Canonical origin for Stripe's return URLs. Defaults to the request origin |
-| `SECOND_CHANCE_CURRENCY` | no | Currency for prospectus items. Default `ghs` |
+| `SECOND_CHANCE_CURRENCY` | no | Currency for prospectus items. Default `usd` |
 | `STRIPE_CURRENCY` | no | Currency for general donations. Default `eur` |
 | `STRIPE_PRICES` | see below | JSON price table in minor units. Required if you change a currency |
 
@@ -216,9 +216,9 @@ pointing at bank transfer, so giving never silently breaks.
 | Where | Item id | Price |
 |---|---|---|
 | `donate.html` panel, `home.html` giving card | `donation` | Open, EUR 1 to 50,000. Optional monthly |
-| Second Chance tiers | `tier-founding` … `tier-champion` | GHS 50,000 / 30,000 / 15,000 / 10,000 / 5,000 |
-| Second Chance tickets | `ticket` | GHS 900 each, 1 to 10 |
-| Friend of Second Chance | `friend` | Open, GHS 1,000 to 4,999 |
+| Second Chance tiers | `tier-founding` … `tier-champion` | USD 4,396 / 2,638 / 1,319 / 879 / 440 |
+| Second Chance tickets | `ticket` | USD 79 each, 1 to 10 |
+| Friend of Second Chance | `friend` | Open, USD 88 to 439 |
 
 ### The rule that matters
 
@@ -232,31 +232,50 @@ Two smaller guards worth keeping: `cancel_url` is validated against a path patte
 than sanitised character by character, and item lookup uses `hasOwnProperty` so an id like
 `constructor` cannot reach through to `Object.prototype`.
 
-### Currency: read this before going live
+### Currency
 
-**Stripe does not support Ghana as an account country**, and GHS is not a presentment
-currency for most accounts (it is absent from Stripe's own minimum-charge table). Ghana is
-served through Paystack's extended network instead. Belgium, which matches the foundation's
-`BE74…` IBAN, is fully supported.
+The prospectus quotes Ghana Cedis, but **Stripe does not support Ghana as an account
+country** and GHS is not a presentment currency for most accounts. Ghana is served through
+Paystack instead. So the site charges **USD**, which every Stripe account can present.
 
-So a Belgium-based Stripe account will very likely **not** be able to charge the Second
-Chance items in GHS. Confirm this in the Dashboard before launch. There are three routes:
+The GHS figures are kept in the catalogue beside each USD price, as the record of where the
+conversion came from:
 
-1. **Price the prospectus items in EUR.** Set `SECOND_CHANCE_CURRENCY=eur` **and**
-   `STRIPE_PRICES` with the converted figures, then update the `&#8373;` symbols and the
-   quoted GHS figures in `index.html` so the page matches what is charged.
-2. **Take a separate Paystack account for Ghana** and point the prospectus items there,
-   leaving Stripe for general euro donations.
-3. **Leave the prospectus items offline**, handled by invoice through the partnerships
-   team, exactly as the printed prospectus says. General donations still work on Stripe.
+| Tier | Prospectus | Charged |
+|---|---|---|
+| Founding Partner | GHS 50,000 | USD 4,396 |
+| Impact Partner | GHS 30,000 | USD 2,638 |
+| Programme Partner | GHS 15,000 | USD 1,319 |
+| Supporting Partner | GHS 10,000 | USD 879 |
+| Second Chance Champion | GHS 5,000 | USD 440 |
+| Individual ticket | GHS 900 | USD 79 |
+| Friend of Second Chance | GHS 1,000 to 4,999 | USD 88 to 439 |
 
-**Prices are stored per currency, and that is deliberate.** An earlier version of this
-handler let an env var swap the currency while leaving the amount alone, so
-`SECOND_CHANCE_CURRENCY=eur` would have charged a founding partner **EUR 50,000 instead of
-GHS 50,000**, roughly sixteen times over. Now each item carries a `prices` map keyed by
-currency, and an item with no price in the configured currency is **refused with a 501**
-rather than sold at a figure meant for another currency. Never reintroduce a bare currency
-swap.
+Converted at **11.3730 GHS per USD**, the mid of two independent rates on **2026-09-07**,
+rounded to the whole dollar. The cedi moves, so re-check before a major campaign and before
+reprinting the prospectus. Friend tops out at USD 439 rather than 440 so it stays strictly
+below the Champion tier, as GHS 4,999 did below GHS 5,000.
+
+Prices are stored per currency, and that is deliberate. An early version let an env var swap
+the currency while leaving the amount alone, so switching to EUR would have charged a
+founding partner EUR 50,000 instead of GHS 50,000, roughly sixteen times over. Now each item
+carries a `prices` map keyed by currency, and an item with no price in the configured
+currency is **refused with a 501** rather than sold at a figure meant for another currency.
+Never reintroduce a bare currency swap.
+
+### Paying in other currencies
+
+Cards from any country work already: the charge is presented in USD and the cardholder's own
+bank converts. To go further and show each visitor **their own local currency**, turn on
+**Adaptive Pricing** in the Stripe Dashboard at
+[settings/adaptive-pricing](https://dashboard.stripe.com/settings/adaptive-pricing). It
+covers 150+ countries, needs no code change, and costs the foundation nothing (the 2 to 4
+per cent conversion fee is borne by the payer, who can always choose to pay in USD instead).
+
+Two caveats worth knowing. Adaptive Pricing requires the price currency to be one of your
+**settlement currencies**, so a euro-settling account needs USD settlement added before it
+takes effect. And Ghana is not among the 150+ covered markets, so Ghanaian supporters will
+see USD either way.
 
 ### Testing before going live
 

@@ -39,11 +39,14 @@ const STRIPE_VERSION = '2024-06-20';
  * If the configured currency has no price, the item is refused rather than
  * charged at the wrong figure.
  *
- * NOTE: Stripe does not support Ghana as an account country and GHS is not a
- * presentment currency for most accounts. A Belgium-based account will need the
- * eur prices filled in below (or via STRIPE_PRICES) before these items can sell.
+ * The prospectus quotes Ghana Cedis, but Stripe does not support Ghana as an account
+ * country and GHS is not a presentment currency for most accounts, so the site charges
+ * USD. The ghs figures are kept beside each usd price as the source of the conversion.
+ *
+ * Converted at 11.3730 GHS per USD, the mid of two independent rates on 2026-09-07,
+ * then rounded to the whole dollar. Re-check before a large campaign: the cedi moves.
  */
-const SC_CUR = (process.env.SECOND_CHANCE_CURRENCY || 'ghs').toLowerCase();
+const SC_CUR = (process.env.SECOND_CHANCE_CURRENCY || 'usd').toLowerCase();
 const GEN_CUR = (process.env.STRIPE_CURRENCY || 'eur').toLowerCase();
 
 /**
@@ -65,32 +68,32 @@ function priceOverrides() {
 /** Fixed-price items. `prices` maps currency -> amount in minor units. */
 const CATALOGUE = {
   'tier-founding': {
-    prices: { ghs: 5000000 },
+    prices: { usd: 439600, ghs: 5000000 },
     name: 'Founding Partner \u2014 The Second Chance Initiative',
     description: '5 VIP invitations to the launch reception, Accra, 28 November 2026.',
   },
   'tier-impact': {
-    prices: { ghs: 3000000 },
+    prices: { usd: 263800, ghs: 3000000 },
     name: 'Impact Partner \u2014 The Second Chance Initiative',
     description: '3 VIP invitations to the launch reception, Accra, 28 November 2026.',
   },
   'tier-programme': {
-    prices: { ghs: 1500000 },
+    prices: { usd: 131900, ghs: 1500000 },
     name: 'Programme Partner \u2014 The Second Chance Initiative',
     description: '2 invitations to the launch reception, Accra, 28 November 2026.',
   },
   'tier-supporting': {
-    prices: { ghs: 1000000 },
+    prices: { usd: 87900, ghs: 1000000 },
     name: 'Supporting Partner \u2014 The Second Chance Initiative',
     description: '2 invitations to the launch reception, Accra, 28 November 2026.',
   },
   'tier-champion': {
-    prices: { ghs: 500000 },
+    prices: { usd: 44000, ghs: 500000 },
     name: 'Second Chance Champion',
     description: '1 invitation to the launch reception, Accra, 28 November 2026.',
   },
   'ticket': {
-    prices: { ghs: 90000 },
+    prices: { usd: 7900, ghs: 90000 },
     name: 'Second Chance Launch Reception \u2014 individual ticket',
     description: 'Entry, drinks and light bites. Accra, 28 November 2026.',
     quantityMax: 10,
@@ -101,14 +104,18 @@ const CATALOGUE = {
 const OPEN = {
   donation: {
     group: 'general',
-    bounds: { eur: [100, 5000000], usd: [100, 5000000], gbp: [100, 5000000] },
+    bounds: {
+      usd: [100, 5000000], eur: [100, 5000000], gbp: [100, 5000000],
+      cad: [100, 5000000], aud: [100, 5000000], chf: [100, 5000000],
+    },
     name: 'Donation to I Am Human Foundation',
     description: 'Supporting advocacy, essential needs, and community projects.',
     donate: true,
   },
   friend: {
     group: 'second-chance',
-    bounds: { ghs: [100000, 499900] },
+    // $439 max keeps a Friend gift strictly below the $440 Champion tier.
+    bounds: { usd: [8800, 43900], ghs: [100000, 499900] },
     name: 'Friend of Second Chance',
     description: 'Includes one complimentary reception seat.',
     donate: true,
