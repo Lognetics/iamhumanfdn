@@ -27,6 +27,7 @@ script.js             theme toggle, hero + event sliders, video facades, dropdow
                       mobile menu, reveals, copy-IBAN, form delivery, Stripe checkout
 api/contact.js        serverless mail handler for both forms (see "Email" below)
 api/checkout.js       serverless Stripe Checkout handler (see "Payments" below)
+check-payments.sh     one command to confirm card payments are live
 package.json          declares type:module so the two api functions load as ESM
 .env.example          the environment variable names, with no values
 assets/               logo-emblem.png, founder-shalimar.jpg, photos/p01–p77.jpg
@@ -278,6 +279,31 @@ Two caveats worth knowing. Adaptive Pricing requires the price currency to be on
 **settlement currencies**, so a euro-settling account needs USD settlement added before it
 takes effect. And Ghana is not among the 150+ covered markets, so Ghanaian supporters will
 see USD either way.
+
+### Going live: the whole checklist
+
+The code is deployed and every payment button is wired. Only the key is missing.
+
+1. **Roll the Stripe secret key.** Dashboard -> Developers -> API keys. Roll it, because
+   any key that has been pasted into a chat, an email or a ticket should be considered
+   public. Copy the new `sk_live_…`.
+2. **Add it in Vercel.** Project -> Settings -> Environment Variables (or click into the
+   Production environment). Add `STRIPE_SECRET_KEY`, tick **Production**, Save. Add
+   `SITE_URL` = `https://iamhumanfdn.org` at the same time, so Stripe's receipt and cancel
+   links return to the real domain rather than the vercel.app one.
+3. **Redeploy.** Vercel does not apply variables to existing deployments. Deployments ->
+   the latest one -> Redeploy.
+4. **Confirm it worked**, without spending anything:
+
+   ```bash
+   ./check-payments.sh
+   ```
+
+   Four `OK` lines means live. `WAIT` means the key is not set or the redeploy has not
+   happened. `FAIL` prints what Stripe objected to.
+
+Start with a `sk_test_…` key and card `4242 4242 4242 4242` if you want to watch one go
+through first. Same variable, different value, redeploy again to switch to live.
 
 ### Testing before going live
 
