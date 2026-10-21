@@ -28,9 +28,8 @@ probe() {
 
 probe "Donation, EUR 25    " '{"item":"donation","amount":25}'
 probe "Founding Partner    " '{"item":"tier-founding"}'
-probe "Reception ticket    " '{"item":"ticket","quantity":1}'
 probe "Friend of Second Ch." '{"item":"friend","amount":100}'
 
 echo
-echo "OK on all four means payments are live."
+echo "OK on all three means payments are live."
 echo "WAIT means the key is not set, or the project has not been redeployed since."

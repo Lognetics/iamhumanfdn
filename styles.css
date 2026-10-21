@@ -2870,6 +2870,7 @@ body.is-locked .site-header {
   gap: 1.3rem;
   margin-top: clamp(2.25rem, 4vw, 3.25rem);
 }
+.benefit-pair--single { grid-template-columns: minmax(0, 36rem); justify-content: center; }
 .benefit-trio {
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.3rem;

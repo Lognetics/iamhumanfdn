@@ -54,7 +54,7 @@ const GEN_CUR = (process.env.STRIPE_CURRENCY || 'eur').toLowerCase();
 
 /**
  * Optional JSON override, e.g.
- *   STRIPE_PRICES={"tier-founding":{"eur":300000},"ticket":{"eur":5500}}
+ *   STRIPE_PRICES={"tier-founding":{"eur":300000},"tier-impact":{"eur":200000}}
  * Amounts are in the currency's minor unit. Merged over the table below.
  */
 function priceOverrides() {
@@ -73,33 +73,27 @@ const CATALOGUE = {
   'tier-founding': {
     prices: { usd: 450000, ghs: 5000000 },
     name: 'Founding Partner \u2014 The Second Chance Initiative',
-    description: '5 VIP invitations to the launch reception, Accra, 28 November 2026.',
+    description: 'Our highest level of partnership in the Second Chance Initiative.',
   },
   'tier-impact': {
     prices: { usd: 250000, ghs: 3000000 },
     name: 'Impact Partner \u2014 The Second Chance Initiative',
-    description: '3 VIP invitations to the launch reception, Accra, 28 November 2026.',
+    description: 'Delivering the Second Chance Initiative\u2019s inaugural impact.',
   },
   'tier-programme': {
     prices: { usd: 150000, ghs: 1500000 },
     name: 'Programme Partner \u2014 The Second Chance Initiative',
-    description: '2 invitations to the launch reception, Accra, 28 November 2026.',
+    description: 'Partnering in the Second Chance Initiative programme.',
   },
   'tier-supporting': {
     prices: { usd: 85000, ghs: 1000000 },
     name: 'Supporting Partner \u2014 The Second Chance Initiative',
-    description: '2 invitations to the launch reception, Accra, 28 November 2026.',
+    description: 'Supporting the Second Chance Initiative.',
   },
   'tier-champion': {
     prices: { usd: 45000, ghs: 500000 },
     name: 'Second Chance Champion',
-    description: '1 invitation to the launch reception, Accra, 28 November 2026.',
-  },
-  'ticket': {
-    prices: { usd: 8000, ghs: 90000 },
-    name: 'Second Chance Launch Reception \u2014 individual ticket',
-    description: 'Entry, drinks and light bites. Accra, 28 November 2026.',
-    quantityMax: 10,
+    description: 'Championing the Second Chance Initiative.',
   },
 };
 
@@ -120,7 +114,7 @@ const OPEN = {
     // $449 max keeps a Friend gift strictly below the $450 Champion tier.
     bounds: { usd: [9000, 44900], ghs: [100000, 499900] },
     name: 'Friend of Second Chance',
-    description: 'Includes one complimentary reception seat.',
+    description: 'A gift towards the Second Chance Initiative.',
     donate: true,
   },
 };

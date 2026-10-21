@@ -164,11 +164,14 @@ that is what was cropping the landscape shots in half.
 ## The Second Chance Initiative page
 
 `index.html` is a straight transcription of the Founding Partnership & Sponsorship
-Prospectus, section for section, with nothing dropped: the conviction and its three-line
-creed, the four programme routes, the reception's four facts and six-step run sheet, the
-five partnership tiers, the full benefit list for all five, individual tickets and the
-Friend tier with both footnotes, the six ways to open a door, the track record with its
-three headline numbers, and the closing detail rows.
+Prospectus: the conviction and its three-line creed, the four programme routes, the five
+partnership tiers, the full benefit list for all five, the Friend tier, the six ways to open
+a door, the track record with its three headline numbers, and the closing detail rows.
+
+The prospectus also described a launch reception (28 November 2026, Accra) with individual
+tickets and event perks on every tier. That event was removed from the site in October 2026:
+the reception section, the `ticket` checkout item, and every invitation, stage and
+reception benefit are gone. The Initiative, its tiers and its prices are unchanged.
 
 Its components are namespaced and live in section 9 of `styles.css`, so nothing there
 touches the rest of the site: `.sc-hero` · `.subnav` · `.creed` · `.sc-coda` · `.spec-grid`
@@ -218,7 +221,6 @@ pointing at bank transfer, so giving never silently breaks.
 |---|---|---|
 | `donate.html` panel, `home.html` giving card | `donation` | Open, EUR 1 to 50,000. Optional monthly |
 | Second Chance tiers | `tier-founding` … `tier-champion` | USD 4,500 / 2,500 / 1,500 / 850 / 450 |
-| Second Chance tickets | `ticket` | USD 80 each, 1 to 10 |
 | Friend of Second Chance | `friend` | Open, USD 90 to 449 |
 
 ### The rule that matters
@@ -249,7 +251,6 @@ conversion came from:
 | Programme Partner | GHS 15,000 | USD 1,500 |
 | Supporting Partner | GHS 10,000 | USD 850 |
 | Second Chance Champion | GHS 5,000 | USD 450 |
-| Individual ticket | GHS 900 | USD 80 |
 | Friend of Second Chance | GHS 1,000 to 4,999 | USD 90 to 449 |
 
 Converted at **11.3730 GHS per USD**, the mid of two independent rates on **2026-09-07**,
